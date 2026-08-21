@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Учи слова из FunnyGerman</title>
+  <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+  <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+  <p class="fc-credit">Сделано с ♥ вместе с Claude — для <a href="https://t.me/FunnyGerman" target="_blank"
+      rel="noopener">FunnyGerman</a></p>
+
+  <script type="module">
+    import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+    const cards = [
+      {
+        "key": "eltern-roditeli",
+        "frontText": "die Eltern",
+        "frontDetails": "",
+        "backText": "родители",
+        "backDetails": "",
+        "category": "существительное"
+      },
+      {
+        "key": "ohne-bez",
+        "frontText": "ohne",
+        "frontDetails": "",
+        "backText": "без",
+        "backDetails": "",
+        "category": "предлог"
+      },
+      {
+        "key": "filter-filter",
+        "frontText": "der Filter",
+        "frontDetails": "die Filter",
+        "backText": "фильтр",
+        "backDetails": "",
+        "category": "существительное"
+      },
+      {
+        "key": "geteilt-razdelenniy",
+        "frontText": "geteilt",
+        "frontDetails": "",
+        "backText": "разделённый, поделённый",
+        "backDetails": "",
+        "category": "причастие"
+      },
+      {
+        "key": "leid-gore",
+        "frontText": "das Leid",
+        "frontDetails": "",
+        "backText": "горе, боль, страдание",
+        "backDetails": "",
+        "category": "существительное"
+      },
+      {
+        "key": "halb-polovinniy",
+        "frontText": "halb",
+        "frontDetails": "",
+        "backText": "половинный, частичный, наполовину",
+        "backDetails": "",
+        "category": "прилагательное"
+      }
+    ]
+    openDeck(cards, { lang: "ru", dictionary: "de-ru" });
+  </script>
+</body>
+
+</html>
