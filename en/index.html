@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>German → English · Wortschatz</title>
+  <link rel="stylesheet" href="../assets/decks.css" />
+</head>
+
+<body>
+  <main>
+    <a class="back" href="../">← Wortschatz</a>
+    <h1>German → English</h1>
+    <p class="lede">Vocabulary flashcards. Open any deck straight in the browser.</p>
+
+    <div id="decks"></div>
+    <p class="status" id="status">Loading decks…</p>
+
+    <footer>
+      Telegram:
+      <a href="https://t.me/EnglishFunnyGerman">FunnyGerman in English</a>
+    </footer>
+  </main>
+
+  <script type="module">
+    import { renderDecks } from "../assets/decks.js";
+
+    renderDecks({
+      dir: "en",
+      lang: "en",
+      into: document.getElementById("decks"),
+      status: document.getElementById("status"),
+    });
+  </script>
+</body>
+
+</html>
