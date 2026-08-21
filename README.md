@@ -11,16 +11,12 @@ No app, no accounts, just flashcards in browser.
 
 ## Website
 
-The decks are published with GitHub Pages at **https://funnygerman.github.io/wortschatz/**.
+The decks are published with GitHub Pages straight from `main`, at
+**https://funnygerman.github.io/wortschatz/**. There is no build step: each deck is
+served at its own path, for example
 
-Every push to `main` runs [`.github/workflows/pages.yml`](.github/workflows/pages.yml), which
-builds the site with `node scripts/build-index.mjs _site` and deploys it. The index page is
-generated from the deck files, so adding a new `.html` deck under `de-ru/` or `de-en/` is enough —
-it shows up on the site automatically (newest first, using the deck's `<title>`).
+* https://funnygerman.github.io/wortschatz/de-ru/funnygerman_21_08_26.html
 
-Preview locally:
-
-```sh
-node scripts/build-index.mjs _site
-python3 -m http.server -d _site
-```
+Add an `.html` file under `de-ru/` or `de-en/`, push it to `main`, and it is live at the
+matching URL a moment later. The empty `.nojekyll` file tells Pages to serve the files
+as-is instead of running them through Jekyll.
