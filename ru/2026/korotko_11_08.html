@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Учи слова из FunnyGerman</title>
+  <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+  <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+  <p class="fc-credit">Сделано с ♥ вместе с Claude — для <a href="https://t.me/FunnyGerman" target="_blank"
+      rel="noopener">FunnyGerman</a></p>
+
+  <script type="module">
+    import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+    const cards = [
+      {
+        "key": "beste-luchshee",
+        "frontText": "das Beste",
+        "frontDetails": "от gut",
+        "backText": "лучшее",
+        "backDetails": "",
+        "category": "прилагательное"
+      },
+      {
+        "key": "kommen-nastupat",
+        "frontText": "kommen",
+        "frontDetails": "kam / gekommen",
+        "backText": "приходить, наступать",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "manchmal-inogda",
+        "frontText": "manchmal",
+        "frontDetails": "",
+        "backText": "иногда, порой",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "ganz-ochen",
+        "frontText": "ganz",
+        "frontDetails": "",
+        "backText": "очень",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "leise-tiho",
+        "frontText": "leise",
+        "frontDetails": "",
+        "backText": "тихо",
+        "backDetails": "",
+        "category": "наречие"
+      }
+    ];
+
+    openDeck(cards, { lang: "ru", dictionary: "de-ru" });
+  </script>
+</body>
+
+</html>
