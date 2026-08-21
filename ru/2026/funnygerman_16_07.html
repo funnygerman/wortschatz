@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Учи слова из FunnyGerman</title>
+  <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+  <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+  <p class="fc-credit">Сделано с ♥ вместе с Claude — для <a href="https://t.me/FunnyGerman" target="_blank"
+      rel="noopener">FunnyGerman</a></p>
+
+  <script type="module">
+    import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+    const cards = [
+      {
+        "key": "schwarz-cherniy",
+        "frontText": "schwarz",
+        "frontDetails": "",
+        "backText": "чёрный",
+        "backDetails": "",
+        "category": "прилагательное"
+      },
+      {
+        "key": "schaf-ovca",
+        "frontText": "das Schaf",
+        "frontDetails": "die Schafe",
+        "backText": "овца",
+        "backDetails": "",
+        "category": "существительно"
+      },
+      {
+        "key": "anders-drugoy",
+        "frontText": "anders",
+        "frontDetails": "",
+        "backText": "другой, иной",
+        "backDetails": "",
+        "category": "прилагательное"
+      },
+      {
+        "key": "sondern-a",
+        "frontText": "sondern",
+        "frontDetails": "",
+        "backText": "а, но",
+        "backDetails": "",
+        "category": "союз"
+      },
+      {
+        "key": "weiss-beliy",
+        "frontText": "weiß",
+        "frontDetails": "",
+        "backText": "белый",
+        "backDetails": "",
+        "category": "прилагательное"
+      },
+      {
+        "key": "gleich-odinakoviy",
+        "frontText": "gleich",
+        "frontDetails": "",
+        "backText": "одинаковый",
+        "backDetails": "",
+        "category": "прилагательное"
+      }
+    ];
+
+    openDeck(cards, { lang: "ru", dictionary: "de-ru" });
+  </script>
+</body>
+
+</html>
