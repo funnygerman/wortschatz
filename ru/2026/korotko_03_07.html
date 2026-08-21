@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Учи слова из "Коротко о немецком"</title>
+  <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+  <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+  <p class="fc-credit">Сделано с ♥ вместе с Claude — для <a href="https://t.me/korotko_de" target="_blank"
+      rel="noopener">korotko_de</a></p>
+
+  <script type="module">
+    import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+    const cards = [
+      {
+        "key": "heute-segodnya",
+        "frontText": "heute",
+        "frontDetails": "",
+        "backText": "сегодня",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "gut-horshiy",
+        "frontText": "gut",
+        "frontDetails": "",
+        "backText": "хороший",
+        "backDetails": "",
+        "category": "прилагательное"
+      },
+      {
+        "key": "tag-den",
+        "frontText": "der Tag",
+        "frontDetails": "die Tage",
+        "backText": "день",
+        "backDetails": "",
+        "category": "существительное"
+      },
+      {
+        "key": "glücklich-schastliviy",
+        "frontText": "glücklich",
+        "frontDetails": "",
+        "backText": "счастливый",
+        "backDetails": "",
+        "category": "прилагательное"
+      },
+      {
+        "key": "glück-schastye",
+        "frontText": "das Glück",
+        "frontDetails": "",
+        "backText": "счастье",
+        "backDetails": "",
+        "category": "существительное"
+      },
+      {
+        "key": "vor-der-tür-stehen-bit-na-poroge",
+        "frontText": "vor der Tür stehen",
+        "frontDetails": "",
+        "backText": "быть на пороге, вот-вот случиться",
+        "backDetails": "",
+        "category": "выражение"
+      },
+      {
+        "key": "dann-togda",
+        "frontText": "dann",
+        "frontDetails": "",
+        "backText": "тогда",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "reinlassen-vpuskat",
+        "frontText": "reinlassen",
+        "frontDetails": "ließ rein / reingelassen",
+        "backText": "впускать",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "lieb-dorogoy",
+        "frontText": "lieb",
+        "frontDetails": "",
+        "backText": "дорогой, любимый",
+        "backDetails": "",
+        "category": "прилагательное"
+      },
+      {
+        "key": "schön-horosho",
+        "frontText": "schön",
+        "frontDetails": "",
+        "backText": "хорошо, славно",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "kaffee-kofe",
+        "frontText": "der Kaffee",
+        "frontDetails": "",
+        "backText": "кофе",
+        "backDetails": "",
+        "category": "существительное"
+      },
+      {
+        "key": "tee-chay",
+        "frontText": "der Tee",
+        "frontDetails": "",
+        "backText": "чай",
+        "backDetails": "",
+        "category": "существительное"
+      },
+      {
+        "key": "gleich-srazu",
+        "frontText": "gleich",
+        "frontDetails": "",
+        "backText": "сразу, тот час",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "wieder-snova",
+        "frontText": "wieder",
+        "frontDetails": "",
+        "backText": "снова, опять",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "gehen-uyti",
+        "frontText": "gehen",
+        "frontDetails": "ging / gegangen",
+        "backText": "уйти, уходить",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "bleiben-ostavatsya",
+        "frontText": "bleiben",
+        "frontDetails": "blieb / geblieben",
+        "backText": "оставаться",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "auch-tozhe",
+        "frontText": "auch",
+        "frontDetails": "",
+        "backText": "тоже, также",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "entspannt-spokoyniy",
+        "frontText": "entspannt",
+        "frontDetails": "",
+        "backText": "спокойный, расслабленный",
+        "backDetails": "",
+        "category": "причастие"
+      },
+      {
+        "key": "festhalten-uderzhivat",
+        "frontText": "festhalten",
+        "frontDetails": "hielt fest / festgehalten",
+        "backText": "удерживать, держать",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "lassen-pozvolyat",
+        "frontText": "lassen",
+        "frontDetails": "ließ / gelassen",
+        "backText": "позволять, разрешать",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "verschaffen-dostavlyat",
+        "frontText": "verschaffen",
+        "frontDetails": "verschaffte / verschafft",
+        "backText": "доставлять",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "klar-yasno",
+        "frontText": "klar",
+        "frontDetails": "",
+        "backText": "ясно, понятно",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "fragen-sprashivat",
+        "frontText": "fragen",
+        "frontDetails": "fragte / gefragt",
+        "backText": "спрашивать",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "deswegen-poetomu",
+        "frontText": "deswegen",
+        "frontDetails": "",
+        "backText": "поэтому",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "jemanden-gelegen-kommen-proishodit-vovremya",
+        "frontText": "jemanden gelegen kommen",
+        "frontDetails": "",
+        "backText": "случаться вовремя, кстати",
+        "backDetails": "",
+        "category": "выражение"
+      },
+      {
+        "key": "wird-auch-langsam-zeit-samoe-vremya",
+        "frontText": "wird auch langsam Zeit",
+        "frontDetails": "",
+        "backText": "самое время",
+        "backDetails": "",
+        "category": "выражение"
+      },
+      {
+        "key": "nun-vot",
+        "frontText": "nun",
+        "frontDetails": "",
+        "backText": "вот",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "sitzen-sidet",
+        "frontText": "sitzen",
+        "frontDetails": "saß / gesessen",
+        "backText": "сидеть",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "schon-uzhe",
+        "frontText": "schon",
+        "frontDetails": "",
+        "backText": "уже",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "lange-dolgo",
+        "frontText": "lange",
+        "frontDetails": "",
+        "backText": "долго, давно",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "couch-divan",
+        "frontText": "die Couch",
+        "frontDetails": "die Couch(e)s",
+        "backText": "диван, кушетка",
+        "backDetails": "",
+        "category": "существительное"
+      },
+      {
+        "key": "fühlen-sich-chuvstovat-sebya",
+        "frontText": "sich fühlen",
+        "frontDetails": "fühlte / gefühlt",
+        "backText": "чувствовать себя",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "sehr-ochen",
+        "frontText": "sehr",
+        "frontDetails": "",
+        "backText": "очень",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "wohl-uyutno",
+        "frontText": "wohl",
+        "frontDetails": "",
+        "backText": "уютно, хорошо",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "denken-dumat",
+        "frontText": "denken",
+        "frontDetails": "dachte / gedacht",
+        "backText": "думать",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "Autsch-oy",
+        "frontText": "Autsch",
+        "frontDetails": "",
+        "backText": "ой, ай",
+        "backDetails": "",
+        "category": "междометие"
+      },
+      {
+        "key": "langsam-potihonku",
+        "frontText": "langsam",
+        "frontDetails": "",
+        "backText": "потихоньку",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "das-schlechte-gewissen-ugrizeniya-sovesti",
+        "frontText": "das schlechte Gewissen",
+        "frontDetails": "",
+        "backText": "угрызения совести, нечистая совесть",
+        "backDetails": "",
+        "category": "выражение"
+      },
+      {
+        "key": "andere-drugoy",
+        "frontText": "andere",
+        "frontDetails": "",
+        "backText": "другой",
+        "backDetails": "",
+        "category": "местоимение"
+      },
+      {
+        "key": "jetzt-seychas",
+        "frontText": "jetzt",
+        "frontDetails": "",
+        "backText": "сейчас, теперь",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "vermissen-hvatitsya",
+        "frontText": "vermissen",
+        "frontDetails": "vermisste / vermisst",
+        "backText": "хватиться",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "sagen-govorit",
+        "frontText": "sagen",
+        "frontDetails": "sagte / gesagt",
+        "backText": "говорить, сказать",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "ganz-ochen",
+        "frontText": "ganz",
+        "frontDetails": "",
+        "backText": "очень",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "verblüfft-sbitiy-s-tolku",
+        "frontText": "verblüfft",
+        "frontDetails": "",
+        "backText": "сбитый с толку, ошеломлённый",
+        "backDetails": "",
+        "category": "причастие"
+      },
+      {
+        "key": "situation-situaciya",
+        "frontText": "die Situation",
+        "frontDetails": "die Situationen",
+        "backText": "ситуация",
+        "backDetails": "",
+        "category": "существительное"
+      },
+      {
+        "key": "vielleicht-mozhet",
+        "frontText": "vielleicht",
+        "frontDetails": "",
+        "backText": "может быть, возможно",
+        "backDetails": "",
+        "category": "наречие"
+      },
+      {
+        "key": "verwöhnt-izbalovanniy",
+        "frontText": "verwöhnt",
+        "frontDetails": "",
+        "backText": "избалованный",
+        "backDetails": "",
+        "category": "причастие"
+      },
+      {
+        "key": "einsehen-ponimat",
+        "frontText": "einsehen",
+        "frontDetails": "sah ein / eingesehen",
+        "backText": "понимать, сознавать",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "jemanden-zuliebe-radi-kogo-to",
+        "frontText": "jemanden zuliebe",
+        "frontDetails": "",
+        "backText": "ради кого-то",
+        "backDetails": "",
+        "category": "выражение"
+      },
+      {
+        "key": "endlich-nakonec",
+        "frontText": "endlich",
+        "frontDetails": "",
+        "backText": "наконец",
+        "backDetails": "",
+        "category": "наречие"
+      }
+    ]
+    openDeck(cards, { lang: "ru", dictionary: "de-ru" });
+  </script>
+</body>
+
+</html>
