@@ -11,13 +11,27 @@ No app, no accounts, just flashcards in browser.
 
 ## Website
 
-The decks are published with GitHub Pages straight from `main`, at
-**https://funnygerman.github.io/wortschatz/**. There is no build step: each deck is
-served at its own path, for example
+The decks are published with GitHub Pages at **https://funnygerman.github.io/wortschatz/**.
 
-* https://funnygerman.github.io/wortschatz/ru/2026/funnygerman_16_07.html
-* https://funnygerman.github.io/wortschatz/ru/2026/funnygerman_21_08.html
+Every push to `main` runs [`.github/workflows/pages.yml`](.github/workflows/pages.yml), which
+builds the site with `node scripts/build-site.mjs _site` and deploys it. The build copies the
+`ru/` and `en/` folders as they are and generates three index pages:
 
-Add an `.html` file under `de-ru/` or `de-en/`, push it to `main`, and it is live at the
-matching URL a moment later. The empty `.nojekyll` file tells Pages to serve the files
-as-is instead of running them through Jekyll.
+* `index.html` — picks a language
+* `ru/index.html`, `en/index.html` — that language's decks, newest first, grouped by year
+
+The indexes are generated from the deck files on disk, so adding a deck under `ru/2026/` — or
+starting a whole new `ru/2027/` folder — puts it on the site with no index editing and no
+JavaScript in the visitor's browser. Files under `data/` are skipped, and each deck stays at its
+own URL, e.g. https://funnygerman.github.io/wortschatz/ru/2026/funnygerman_21_08.html
+
+A deck's label comes from its filename: `korotko_11_08.html` is read as the *Коротко о немецком*
+channel, 11 August, with the year taken from the folder. Prefixes are mapped to channel names at
+the top of `scripts/build-site.mjs`; an unknown prefix is shown as-is.
+
+Preview locally:
+
+```sh
+node scripts/build-site.mjs _site
+python3 -m http.server -d _site
+```
