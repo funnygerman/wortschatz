@@ -15,7 +15,8 @@ The decks are published with GitHub Pages straight from `main`, at
 **https://funnygerman.github.io/wortschatz/**. There is no build step: each deck is
 served at its own path, for example
 
-* https://funnygerman.github.io/wortschatz/de-ru/funnygerman_21_08_26.html
+* https://funnygerman.github.io/wortschatz/ru/2026/funnygerman_16_07.html
+* https://funnygerman.github.io/wortschatz/ru/2026/funnygerman_21_08.html
 
 Add an `.html` file under `de-ru/` or `de-en/`, push it to `main`, and it is live at the
 matching URL a moment later. The empty `.nojekyll` file tells Pages to serve the files
