@@ -45,7 +45,7 @@
       <p class="status">
         Paste CSV with a header row (e.g. <code>key;frontText;frontDetails;backText;backDetails;category</code>).
         Each row becomes a card object and a Markdown line:
-        <code>🔸 **frontText frontDetails** - backText</code>.
+        <code>🔸 **frontText / frontDetails** - backText</code>.
       </p>
 
       <div class="field">
@@ -148,7 +148,7 @@
         const front = (row.frontText ?? "").trim();
         const details = (row.frontDetails ?? "").trim();
         const back = (row.backText ?? "").trim();
-        const bold = details ? `${front} ${details}` : front;
+        const bold = details ? `${front} / ${details}` : front;
         return `🔸 **${bold}** - ${back}`;
       });
 
