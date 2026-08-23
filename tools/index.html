@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Wortschatz tools</title>
+  <link rel="stylesheet" href="../assets/decks.css" />
+  <script src="papaparse.min.js"></script>
+  <style>
+    main { max-width: 60rem; }
+    section {
+      margin: 2.5rem 0; padding: 1.25rem 1.5rem; background: var(--card);
+      border: 1px solid var(--line); border-radius: .75rem;
+    }
+    label { display: block; font-size: .85rem; color: var(--muted); margin: 0 0 .35rem; }
+    textarea {
+      width: 100%; font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: .5rem;
+      padding: .6rem .7rem; resize: vertical;
+    }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+    @media (max-width: 40rem) { .cols { grid-template-columns: 1fr; } }
+    .field { margin-top: 1rem; }
+    .row { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+    button {
+      font: inherit; padding: .5rem .9rem; border-radius: .5rem; border: 1px solid var(--line);
+      background: var(--bg); color: var(--fg); cursor: pointer;
+    }
+    button:hover { border-color: var(--muted); }
+    button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    .status { font-size: .85rem; color: var(--muted); }
+    .out-head { display: flex; justify-content: space-between; align-items: baseline; }
+  </style>
+</head>
+
+<body>
+  <main>
+    <a class="back" href="../">← Wortschatz</a>
+    <h1>Tools</h1>
+    <p class="lede">Deck authoring helpers. Not part of the flashcard site — used to prepare decks.</p>
+
+    <section>
+      <h2>CSV → JSON &amp; Markdown</h2>
+      <p class="status">
+        Paste CSV with a header row (e.g. <code>key;frontText;frontDetails;backText;backDetails;category</code>).
+        Each row becomes a card object and a Markdown line:
+        <code>🔸 **frontText frontDetails** - backText</code>.
+      </p>
+
+      <div class="field">
+        <label for="csvInput">CSV input (first line = header)</label>
+        <textarea id="csvInput" rows="8" placeholder="key;frontText;frontDetails;backText;backDetails;category&#10;als-chem;als;;чем;;союз"></textarea>
+      </div>
+
+      <div class="row field">
+        <button class="primary" id="transformBtn">Transform</button>
+        <span class="status" id="transformStatus"></span>
+      </div>
+
+      <div class="cols">
+        <div>
+          <div class="out-head">
+            <label for="jsonOutput">JSON</label>
+            <button data-copy="jsonOutput">Copy</button>
+          </div>
+          <textarea id="jsonOutput" rows="12" readonly></textarea>
+        </div>
+        <div>
+          <div class="out-head">
+            <label for="mdOutput">Markdown</label>
+            <button data-copy="mdOutput">Copy</button>
+          </div>
+          <textarea id="mdOutput" rows="12" readonly></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Vocabulary search</h2>
+      <p class="status">
+        Enter German words or expressions, one per line. Each is looked up in a vocabulary.csv by
+        <code>frontText</code>; matches are replaced with their full CSV row, in the same order you typed
+        them. Words with no match are left as-is.
+      </p>
+
+      <div class="row field">
+        <button id="loadRu">Load ru/data/vocabulary.csv</button>
+        <button id="loadEn">Load en/data/vocabulary.csv</button>
+        <span class="status" id="loadStatus">No vocabulary loaded yet.</span>
+      </div>
+
+      <div class="field">
+        <label for="vocabPaste">…or paste a vocabulary.csv here instead (useful if fetch is blocked, e.g. opening this file directly)</label>
+        <textarea id="vocabPaste" rows="4" placeholder="key;frontText;frontDetails;backText;backDetails;category&#10;..."></textarea>
+        <div class="row field">
+          <button id="useVocabPaste">Use pasted CSV</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="wordsInput">Words / expressions to search (one per line)</label>
+        <textarea id="wordsInput" rows="6" placeholder="als&#10;der Arzt&#10;ein Wort, das es nicht gibt"></textarea>
+      </div>
+
+      <div class="row field">
+        <button class="primary" id="searchBtn">Search</button>
+        <span class="status" id="searchStatus"></span>
+      </div>
+
+      <div class="field">
+        <div class="out-head">
+          <label for="searchOutput">Result</label>
+          <button data-copy="searchOutput">Copy</button>
+        </div>
+        <textarea id="searchOutput" rows="10" readonly></textarea>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // --- CSV -> JSON & Markdown -------------------------------------------------
+
+    document.getElementById("transformBtn").addEventListener("click", () => {
+      const input = document.getElementById("csvInput").value;
+      const statusEl = document.getElementById("transformStatus");
+      const jsonOut = document.getElementById("jsonOutput");
+      const mdOut = document.getElementById("mdOutput");
+
+      const parsed = Papa.parse(input.trim(), { header: true, skipEmptyLines: true });
+      if (parsed.errors.length) {
+        statusEl.textContent = `Parse error: ${parsed.errors[0].message}`;
+        return;
+      }
+
+      const rows = parsed.data;
+
+      const cards = rows.map((row) => {
+        const card = {};
+        for (const key of Object.keys(row)) {
+          const value = (row[key] ?? "").trim();
+          if (value !== "") card[key] = value;
+        }
+        return card;
+      });
+
+      const lines = rows.map((row) => {
+        const front = (row.frontText ?? "").trim();
+        const details = (row.frontDetails ?? "").trim();
+        const back = (row.backText ?? "").trim();
+        const bold = details ? `${front} ${details}` : front;
+        return `🔸 **${bold}** - ${back}`;
+      });
+
+      jsonOut.value = JSON.stringify(cards, null, 2);
+      mdOut.value = lines.join("\n");
+      statusEl.textContent = `Transformed ${rows.length} row(s).`;
+    });
+
+    // --- Vocabulary search -------------------------------------------------------
+
+    let vocabRows = []; // [{ row, raw }]
+
+    function loadVocabFromText(text, sourceLabel) {
+      const trimmed = text.trim();
+      const parsed = Papa.parse(trimmed, { header: true, skipEmptyLines: true });
+      const rawLines = trimmed.split("\n");
+      vocabRows = parsed.data.map((row, i) => ({ row, raw: rawLines[i + 1] }));
+      document.getElementById("loadStatus").textContent =
+        `Loaded ${vocabRows.length} entries from ${sourceLabel}.`;
+    }
+
+    async function fetchVocab(relativePath, sourceLabel) {
+      const statusEl = document.getElementById("loadStatus");
+      try {
+        statusEl.textContent = `Loading ${sourceLabel}…`;
+        const res = await fetch(relativePath);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        loadVocabFromText(await res.text(), sourceLabel);
+      } catch (err) {
+        statusEl.textContent =
+          `Could not load ${sourceLabel} (${err.message}). If you opened this file directly ` +
+          `(file://), fetch is blocked — use the paste box below instead, or serve the site ` +
+          `locally (see README).`;
+      }
+    }
+
+    document.getElementById("loadRu").addEventListener("click", () =>
+      fetchVocab("../ru/data/vocabulary.csv", "ru/data/vocabulary.csv")
+    );
+    document.getElementById("loadEn").addEventListener("click", () =>
+      fetchVocab("../en/data/vocabulary.csv", "en/data/vocabulary.csv")
+    );
+    document.getElementById("useVocabPaste").addEventListener("click", () => {
+      const text = document.getElementById("vocabPaste").value;
+      if (!text.trim()) return;
+      loadVocabFromText(text, "pasted CSV");
+    });
+
+    document.getElementById("searchBtn").addEventListener("click", () => {
+      const statusEl = document.getElementById("searchStatus");
+      if (!vocabRows.length) {
+        statusEl.textContent = "Load a vocabulary CSV first.";
+        return;
+      }
+
+      const words = document
+        .getElementById("wordsInput")
+        .value.split("\n")
+        .map((w) => w.trim())
+        .filter((w) => w !== "");
+
+      let matched = 0;
+      const results = words.map((word) => {
+        const found = vocabRows.find(
+          (v) => (v.row.frontText ?? "").trim().toLowerCase() === word.toLowerCase()
+        );
+        if (found) matched++;
+        return found ? found.raw : word;
+      });
+
+      document.getElementById("searchOutput").value = results.join("\n");
+      statusEl.textContent = `${matched} of ${words.length} matched.`;
+    });
+
+    // --- Copy buttons -------------------------------------------------------
+
+    document.querySelectorAll("button[data-copy]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const el = document.getElementById(btn.dataset.copy);
+        try {
+          await navigator.clipboard.writeText(el.value);
+          const original = btn.textContent;
+          btn.textContent = "Copied!";
+          setTimeout(() => (btn.textContent = original), 1200);
+        } catch {
+          el.select();
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

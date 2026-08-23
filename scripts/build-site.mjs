@@ -115,6 +115,12 @@ await writeFile(path.join(out, ".nojekyll"), "");
 await mkdir(path.join(out, "assets"), { recursive: true });
 await copyFile(path.join(root, "assets/decks.css"), path.join(out, "assets/decks.css"));
 
+// Deck authoring tools (not linked from the picker, but published for convenience).
+for (const file of await walk("tools")) {
+  await mkdir(path.join(out, path.dirname(file)), { recursive: true });
+  await copyFile(path.join(root, file), path.join(out, file));
+}
+
 const built = [];
 for (const { dir, lang, heading } of LANGS) {
   const files = await walk(dir);
