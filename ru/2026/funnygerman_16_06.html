@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Учи слова из FunnyGerman</title>
+  <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+  <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+  <p class="fc-credit">Сделано с ♥ вместе с Claude — для <a href="https://t.me/FunnyGerman" target="_blank"
+      rel="noopener">FunnyGerman</a></p>
+
+  <script type="module">
+    import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+    const cards = [
+      {
+        "key": "sandale-sandaliya",
+        "frontText": "die Sandale",
+        "frontDetails": "die Sandalen",
+        "backText": "сандалия",
+        "backDetails": "",
+        "category": "существительное"
+      },
+      {
+        "key": "sehen-videt",
+        "frontText": "sehen",
+        "frontDetails": "sah / gesehen",
+        "backText": "видеть",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "aufsuchen-obratitsya",
+        "frontText": "aufsuchen",
+        "frontDetails": "suchte auf / aufgesucht",
+        "backText": "обратиться",
+        "backDetails": "",
+        "category": "глагол"
+      },
+      {
+        "key": "bitte-pozhaluysta",
+        "frontText": "bitte",
+        "frontDetails": "",
+        "backText": "пожалуйста ",
+        "backDetails": "",
+        "category": "частица"
+      },
+      {
+        "key": "arzt-vrach",
+        "frontText": "der Arzt",
+        "frontDetails": "die Ärzte",
+        "backText": "врач, доктор",
+        "backDetails": "",
+        "category": "существительное"
+      }
+    ];
+
+    openDeck(cards, { lang: "ru", dictionary: "de-ru" });
+  </script>
+</body>
+
+</html>
