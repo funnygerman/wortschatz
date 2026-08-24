@@ -182,6 +182,12 @@
         <span class="status" id="previewLoadStatus">No CSV loaded yet.</span>
       </div>
 
+      <div class="row field">
+        <label style="margin: 0;">Category suggestions:</label>
+        <button class="subtab active" data-catlang="ru">RU (существительное, глагол, …)</button>
+        <button class="subtab" data-catlang="en">EN (noun, verb, …)</button>
+      </div>
+
       <nav class="subtabs">
         <button class="subtab active" data-view="table">Table</button>
         <button class="subtab" data-view="raw">Raw CSV</button>
@@ -383,12 +389,26 @@
     // --- Preview & edit -------------------------------------------------
 
     const CSV_FIELDS = ["key", "frontText", "frontDetails", "backText", "backDetails", "category"];
-    const CATEGORY_VALUES = [
-      "существительное", "глагол", "прилагательное", "наречие", "местоимение",
-      "союз", "предлог", "частица", "междометие", "причастие", "выражение",
-    ];
+    const CATEGORY_SEED = {
+      ru: [
+        "существительное", "глагол", "прилагательное", "наречие", "местоимение",
+        "союз", "предлог", "частица", "междометие", "причастие", "выражение",
+      ],
+      en: [
+        "noun", "verb", "adjective", "adverb", "pronoun",
+        "conjunction", "preposition", "particle", "interjection", "participle", "expression",
+      ],
+    };
 
     let previewTable = null;
+    let categoryLang = "ru";
+
+    function categoryValues() {
+      const fromData = previewTable
+        ? previewTable.getData().map((r) => (r.category ?? "").trim()).filter(Boolean)
+        : [];
+      return [...new Set([...CATEGORY_SEED[categoryLang], ...fromData])];
+    }
 
     function previewColumns() {
       return [
@@ -404,14 +424,30 @@
         { title: "backDetails", field: "backDetails", editor: "input", width: 150 },
         {
           title: "category", field: "category", editor: "list", minWidth: 160,
-          editorParams: { values: CATEGORY_VALUES, autocomplete: true, freetext: true, listOnEmpty: true, clearable: true },
+          editorParams: { values: categoryValues(), autocomplete: true, freetext: true, listOnEmpty: true, clearable: true },
         },
       ];
+    }
+
+    function refreshCategorySuggestions() {
+      if (!previewTable) return;
+      previewTable.updateColumnDefinition("category", {
+        editorParams: { values: categoryValues(), autocomplete: true, freetext: true, listOnEmpty: true, clearable: true },
+      });
+    }
+
+    function setCategoryLang(lang) {
+      categoryLang = lang;
+      document
+        .querySelectorAll(".subtab[data-catlang]")
+        .forEach((b) => b.classList.toggle("active", b.dataset.catlang === lang));
+      refreshCategorySuggestions();
     }
 
     function initPreviewTable(data) {
       if (previewTable) {
         previewTable.setData(data);
+        refreshCategorySuggestions();
         return;
       }
       previewTable = new Tabulator("#previewTable", {
@@ -420,10 +456,16 @@
         height: "480px",
         columns: previewColumns(),
       });
-      previewTable.on("cellEdited", syncPreviewTableToRaw);
+      previewTable.on("cellEdited", (cell) => {
+        syncPreviewTableToRaw();
+        if (cell.getField() === "category") refreshCategorySuggestions();
+      });
       previewTable.on("rowDeleted", syncPreviewTableToRaw);
       previewTable.on("rowAdded", syncPreviewTableToRaw);
-      previewTable.on("dataLoaded", syncPreviewTableToRaw);
+      previewTable.on("dataLoaded", () => {
+        syncPreviewTableToRaw();
+        refreshCategorySuggestions();
+      });
     }
 
     function syncPreviewTableToRaw() {
@@ -434,6 +476,10 @@
         .map((row) => CSV_FIELDS.map((f) => csvField((row[f] ?? "").toString())).join(";"));
       document.getElementById("previewCsv").value = [header, ...rows].join("\n");
     }
+
+    document.querySelectorAll(".subtab[data-catlang]").forEach((btn) => {
+      btn.addEventListener("click", () => setCategoryLang(btn.dataset.catlang));
+    });
 
     async function loadPreviewFromPath(relativePath, sourceLabel) {
       const statusEl = document.getElementById("previewLoadStatus");
@@ -459,12 +505,14 @@
       switchTab("preview");
     }
 
-    document.getElementById("previewLoadRu").addEventListener("click", () =>
-      loadPreviewFromPath("../ru/data/vocabulary.csv", "ru/data/vocabulary.csv")
-    );
-    document.getElementById("previewLoadEn").addEventListener("click", () =>
-      loadPreviewFromPath("../en/data/vocabulary.csv", "en/data/vocabulary.csv")
-    );
+    document.getElementById("previewLoadRu").addEventListener("click", () => {
+      setCategoryLang("ru");
+      loadPreviewFromPath("../ru/data/vocabulary.csv", "ru/data/vocabulary.csv");
+    });
+    document.getElementById("previewLoadEn").addEventListener("click", () => {
+      setCategoryLang("en");
+      loadPreviewFromPath("../en/data/vocabulary.csv", "en/data/vocabulary.csv");
+    });
     document.getElementById("addRowBtn").addEventListener("click", () => {
       if (!previewTable) initPreviewTable([]);
       previewTable.addRow({ key: "", frontText: "", frontDetails: "", backText: "", backDetails: "", category: "" });
@@ -492,9 +540,11 @@
       loadPreviewFromCsvText(text, "Markdown → CSV output");
     });
 
-    document.querySelectorAll(".subtab").forEach((btn) => {
+    document.querySelectorAll(".subtab[data-view]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll(".subtab").forEach((b) => b.classList.toggle("active", b === btn));
+        document
+          .querySelectorAll(".subtab[data-view]")
+          .forEach((b) => b.classList.toggle("active", b === btn));
         document
           .querySelectorAll(".subpanel")
           .forEach((p) => p.classList.toggle("active", p.id === `view-${btn.dataset.view}`));
