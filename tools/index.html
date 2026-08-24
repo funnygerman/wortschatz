@@ -31,6 +31,16 @@
     button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
     .status { font-size: .85rem; color: var(--muted); }
     .out-head { display: flex; justify-content: space-between; align-items: baseline; }
+
+    .tabs { display: flex; gap: .5rem; border-bottom: 1px solid var(--line); margin-top: 1.5rem; }
+    .tab {
+      font: inherit; padding: .6rem 1rem; border: none; background: none; color: var(--muted);
+      cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .tab:hover { color: var(--fg); }
+    .tab.active { color: var(--fg); border-bottom-color: var(--fg); font-weight: 600; }
+    .panel { display: none; }
+    .panel.active { display: block; }
   </style>
 </head>
 
@@ -40,7 +50,13 @@
     <h1>Tools</h1>
     <p class="lede">Deck authoring helpers. Not part of the flashcard site — used to prepare decks.</p>
 
-    <section>
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="csvToJson" role="tab" aria-selected="true">CSV → JSON &amp; Markdown</button>
+      <button class="tab" data-tab="mdToCsv" role="tab" aria-selected="false">Markdown → CSV</button>
+      <button class="tab" data-tab="search" role="tab" aria-selected="false">Vocabulary search</button>
+    </nav>
+
+    <section class="panel active" id="panel-csvToJson">
       <h2>CSV → JSON &amp; Markdown</h2>
       <p class="status">
         Paste CSV with a header row (e.g. <code>key;frontText;frontDetails;backText;backDetails;category</code>).
@@ -76,12 +92,54 @@
       </div>
     </section>
 
-    <section>
+    <section class="panel" id="panel-mdToCsv">
+      <h2>Markdown → CSV</h2>
+      <p class="status">
+        Paste already-published lines like <code>🔸 das Schaf / die Schafe - овца</code> (the ✱✱bold✱✱
+        markers are optional — plain-text copies work too). Each line becomes a CSV row. The
+        <code>key</code> column is filled from <code>frontText</code>, lower-cased and slugified; for a
+        noun (<code>der</code>/<code>die</code>/<code>das</code> ...) the article is dropped first. Check the
+        generated keys — they don't include the transliterated backText half some existing keys use, so
+        adjust for uniqueness if needed.
+      </p>
+
+      <div class="field">
+        <label for="mdInput">Markdown lines (one entry per line)</label>
+        <textarea id="mdInput" rows="8" placeholder="🔸 schwarz - чёрный&#10;🔸 das Schaf / die Schafe - овца"></textarea>
+      </div>
+
+      <div class="row field">
+        <button class="primary" id="mdToCsvBtn">Convert</button>
+        <span class="status" id="mdToCsvStatus"></span>
+      </div>
+
+      <div class="cols">
+        <div>
+          <div class="out-head">
+            <label for="mdCsvOutput">CSV</label>
+            <button data-copy="mdCsvOutput">Copy</button>
+          </div>
+          <textarea id="mdCsvOutput" rows="12" readonly></textarea>
+        </div>
+        <div>
+          <div class="out-head">
+            <label for="mdFrontOutput">frontText only (one per line)</label>
+            <button data-copy="mdFrontOutput">Copy</button>
+          </div>
+          <textarea id="mdFrontOutput" rows="12" readonly></textarea>
+          <div class="row field">
+            <button id="sendToSearch">Send to vocabulary search →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-search">
       <h2>Vocabulary search</h2>
       <p class="status">
         Enter German words or expressions, one per line. Each is looked up in a vocabulary.csv by
-        <code>frontText</code>; matches are replaced with their full CSV row, in the same order you typed
-        them. Words with no match are left as-is.
+        <code>frontText</code>; matches are replaced with their full CSV row (all of them, if a word has
+        more than one entry), in the same order you typed them. Words with no match are left as-is.
       </p>
 
       <div class="row field">
@@ -119,6 +177,23 @@
   </main>
 
   <script>
+    // --- Tabs -------------------------------------------------------
+
+    document.querySelectorAll(".tab").forEach((tab) => {
+      tab.addEventListener("click", () => switchTab(tab.dataset.tab));
+    });
+
+    function switchTab(name) {
+      document.querySelectorAll(".tab").forEach((tab) => {
+        const active = tab.dataset.tab === name;
+        tab.classList.toggle("active", active);
+        tab.setAttribute("aria-selected", String(active));
+      });
+      document.querySelectorAll(".panel").forEach((panel) => {
+        panel.classList.toggle("active", panel.id === `panel-${name}`);
+      });
+    }
+
     // --- CSV -> JSON & Markdown -------------------------------------------------
 
     document.getElementById("transformBtn").addEventListener("click", () => {
@@ -155,6 +230,79 @@
       jsonOut.value = JSON.stringify(cards, null, 2);
       mdOut.value = lines.join("\n");
       statusEl.textContent = `Transformed ${rows.length} row(s).`;
+    });
+
+    // --- Markdown -> CSV -------------------------------------------------
+
+    function slugify(s) {
+      return s
+        .toLowerCase()
+        .replace(/[^\p{L}\p{N}]+/gu, "-")
+        .replace(/^-+|-+$/g, "");
+    }
+
+    function keyFromFrontText(frontText) {
+      const article = frontText.match(/^(der|die|das)\s+(.+)$/i);
+      return slugify(article ? article[2] : frontText);
+    }
+
+    function csvField(value) {
+      return /[;"\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
+    }
+
+    function parseMarkdownLine(line) {
+      let s = line.trim().replace(/^🔸\s*/, "").replace(/\*\*/g, "").trim();
+      if (!s) return null;
+
+      const sepIdx = s.indexOf(" - ");
+      if (sepIdx === -1) return null;
+
+      const frontPart = s.slice(0, sepIdx).trim();
+      const backText = s.slice(sepIdx + 3).trim();
+
+      const slashIdx = frontPart.indexOf(" / ");
+      const frontText = slashIdx === -1 ? frontPart : frontPart.slice(0, slashIdx).trim();
+      const frontDetails = slashIdx === -1 ? "" : frontPart.slice(slashIdx + 3).trim();
+
+      return { frontText, frontDetails, backText };
+    }
+
+    document.getElementById("mdToCsvBtn").addEventListener("click", () => {
+      const inputLines = document
+        .getElementById("mdInput")
+        .value.split("\n")
+        .map((l) => l.trim())
+        .filter((l) => l !== "");
+
+      const entries = [];
+      let skipped = 0;
+      for (const line of inputLines) {
+        const entry = parseMarkdownLine(line);
+        if (entry) entries.push(entry);
+        else skipped++;
+      }
+
+      const header = "key;frontText;frontDetails;backText;backDetails;category";
+      const rows = entries.map((e) =>
+        [keyFromFrontText(e.frontText), e.frontText, e.frontDetails, e.backText, "", ""]
+          .map(csvField)
+          .join(";")
+      );
+
+      document.getElementById("mdCsvOutput").value = [header, ...rows].join("\n");
+      document.getElementById("mdFrontOutput").value = entries.map((e) => e.frontText).join("\n");
+
+      const statusEl = document.getElementById("mdToCsvStatus");
+      statusEl.textContent = skipped
+        ? `Converted ${entries.length} line(s), skipped ${skipped} that didn't match "text - text".`
+        : `Converted ${entries.length} line(s).`;
+    });
+
+    document.getElementById("sendToSearch").addEventListener("click", () => {
+      const list = document.getElementById("mdFrontOutput").value;
+      if (!list.trim()) return;
+      document.getElementById("wordsInput").value = list;
+      switchTab("search");
     });
 
     // --- Vocabulary search -------------------------------------------------------
@@ -210,17 +358,27 @@
         .map((w) => w.trim())
         .filter((w) => w !== "");
 
-      let matched = 0;
-      const results = words.map((word) => {
-        const found = vocabRows.find(
+      let matchedWords = 0;
+      let totalEntries = 0;
+      const results = [];
+      for (const word of words) {
+        const found = vocabRows.filter(
           (v) => (v.row.frontText ?? "").trim().toLowerCase() === word.toLowerCase()
         );
-        if (found) matched++;
-        return found ? found.raw : word;
-      });
+        if (found.length) {
+          matchedWords++;
+          totalEntries += found.length;
+          for (const f of found) results.push(f.raw);
+        } else {
+          results.push(word);
+        }
+      }
 
       document.getElementById("searchOutput").value = results.join("\n");
-      statusEl.textContent = `${matched} of ${words.length} matched.`;
+      statusEl.textContent =
+        totalEntries > matchedWords
+          ? `${matchedWords} of ${words.length} matched (${totalEntries} entries — some words had multiple).`
+          : `${matchedWords} of ${words.length} matched.`;
     });
 
     // --- Copy buttons -------------------------------------------------------
