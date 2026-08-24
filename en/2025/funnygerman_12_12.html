@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Smile, learn, repeat. Learn new words from FunnyGerman</title>
+    <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+    <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+    <p class="fc-credit">Made with ♥ by Claude — for <a href="https://t.me/EnglishFunnyGerman" target="_blank"
+            rel="noopener">FunnyGerman</a></p>
+
+    <script type="module">
+        import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+        const cards = [
+            {
+                "key": "durch-through",
+                "frontText": "durch",
+                "backText": "through, along",
+                "category": "preposition"
+            },
+            {
+                "key": "straße-street",
+                "frontText": "die Straße",
+                "frontDetails": "die Straßen",
+                "backText": "the street",
+                "category": "noun"
+            },
+            {
+                "key": "in-die-hände-klatschen-to-clap-ones-hands",
+                "frontText": "in die Hände klatschen",
+                "frontDetails": "klatschte / geklatscht",
+                "backText": "to clap one's hands",
+                "category": "expression"
+            },
+            {
+                "key": "passant-passerby",
+                "frontText": "der Passant",
+                "frontDetails": "die Passanten",
+                "backText": "the passerby",
+                "category": "noun"
+            },
+            {
+                "key": "verjagen-to-chase-away",
+                "frontText": "verjagen",
+                "frontDetails": "verjagte / verjagt",
+                "backText": "to chase away",
+                "category": "verb"
+            },
+            {
+                "key": "elefant-elephant",
+                "frontText": "der Elefant",
+                "frontDetails": "die Elefanten",
+                "backText": "the elephant",
+                "category": "noun"
+            },
+            {
+                "key": "wirken-to-work",
+                "frontText": "wirken",
+                "frontDetails": "wirkte / gewirkt",
+                "backText": "to work, to have an effect",
+                "category": "verb"
+            }
+        ];
+
+        openDeck(cards, { lang: "en", dictionary: "de-en" });
+    </script>
+</body>
+
+</html>
