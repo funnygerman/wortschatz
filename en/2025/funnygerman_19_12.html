@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Учи слова из FunnyGerman</title>
+    <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+    <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+    <p class="fc-credit">Made with ♥ by Claude — for <a href="https://t.me/EnglishFunnyGerman" target="_blank"
+            rel="noopener">FunnyGerman</a></p>
+
+    <script type="module">
+        import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+        const cards = [
+            {
+                "key": "lebkuchenhaus",
+                "frontText": "das Lebkuchenhaus",
+                "frontDetails": "die Lebkuchenhäuser",
+                "backText": "gingerbread house",
+                "category": "noun"
+            },
+            {
+                "key": "gelingen",
+                "frontText": "gelingen",
+                "frontDetails": "gelang / gelungen",
+                "backText": "to succeed, to turn out well",
+                "category": "verb"
+            },
+            {
+                "key": "plastikdinosaurier",
+                "frontText": "der Plastikdinosaurier",
+                "frontDetails": "die Plastikdinosaurier",
+                "backText": "plastic dinosaur",
+                "category": "noun"
+            },
+            {
+                "key": "daneben",
+                "frontText": "daneben",
+                "backText": "next to it, beside it",
+                "category": "adverb"
+            }
+        ];
+
+        openDeck(cards, { lang: "en", dictionary: "de-en" });
+    </script>
+</body>
+
+</html>
