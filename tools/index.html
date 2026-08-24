@@ -6,9 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Wortschatz tools</title>
   <link rel="stylesheet" href="../assets/decks.css" />
+  <link rel="stylesheet" href="tabulator_simple.min.css" />
   <script src="papaparse.min.js"></script>
+  <script src="tabulator.min.js"></script>
   <style>
-    main { max-width: 60rem; }
+    main { max-width: 68rem; }
     section {
       margin: 2.5rem 0; padding: 1.25rem 1.5rem; background: var(--card);
       border: 1px solid var(--line); border-radius: .75rem;
@@ -41,6 +43,31 @@
     .tab.active { color: var(--fg); border-bottom-color: var(--fg); font-weight: 600; }
     .panel { display: none; }
     .panel.active { display: block; }
+
+    .subtabs { display: flex; gap: .35rem; margin: 1rem 0; }
+    .subtab {
+      font: inherit; font-size: .85rem; padding: .35rem .8rem; border-radius: 999px;
+      border: 1px solid var(--line); background: var(--bg); color: var(--muted); cursor: pointer;
+    }
+    .subtab.active { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    .subpanel { display: none; }
+    .subpanel.active { display: block; }
+
+    .tabulator { background: var(--card); border: 1px solid var(--line); border-radius: .5rem; font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .tabulator .tabulator-header { background: var(--bg); border-bottom: 1px solid var(--line); color: var(--fg); }
+    .tabulator .tabulator-header .tabulator-col { background: var(--bg); border-right: 1px solid var(--line); }
+    .tabulator .tabulator-col-title { color: var(--fg); }
+    .tabulator .tabulator-row { background: var(--card); color: var(--fg); border-bottom: 1px solid var(--line); }
+    .tabulator .tabulator-row.tabulator-row-even { background: var(--bg); }
+    .tabulator .tabulator-row .tabulator-cell { border-right: 1px solid var(--line); }
+    .tabulator .tabulator-row.tabulator-selectable:hover { background: var(--line); }
+    .tabulator .tabulator-row .tabulator-cell.tabulator-editing input,
+    .tabulator .tabulator-row .tabulator-cell.tabulator-editing select {
+      background: var(--card); color: var(--fg); border: 1px solid var(--fg);
+    }
+    .tabulator .tabulator-footer { background: var(--bg); color: var(--muted); border-top: 1px solid var(--line); }
+    .tabulator-edit-list { background: var(--card); color: var(--fg); border: 1px solid var(--line); }
+    .tabulator-edit-list .tabulator-edit-list-item.active { background: var(--fg); color: var(--bg); }
   </style>
 </head>
 
@@ -53,6 +80,7 @@
     <nav class="tabs" role="tablist">
       <button class="tab active" data-tab="csvToJson" role="tab" aria-selected="true">CSV → JSON &amp; Markdown</button>
       <button class="tab" data-tab="mdToCsv" role="tab" aria-selected="false">Markdown → CSV</button>
+      <button class="tab" data-tab="preview" role="tab" aria-selected="false">Preview &amp; edit</button>
       <button class="tab" data-tab="search" role="tab" aria-selected="false">Vocabulary search</button>
     </nav>
 
@@ -71,6 +99,7 @@
 
       <div class="row field">
         <button class="primary" id="transformBtn">Transform</button>
+        <button id="openInPreviewFromCsv">Open in Preview &amp; edit →</button>
         <span class="status" id="transformStatus"></span>
       </div>
 
@@ -120,6 +149,9 @@
             <button data-copy="mdCsvOutput">Copy</button>
           </div>
           <textarea id="mdCsvOutput" rows="12" readonly></textarea>
+          <div class="row field">
+            <button id="openInPreviewFromMd">Open in Preview &amp; edit →</button>
+          </div>
         </div>
         <div>
           <div class="out-head">
@@ -130,6 +162,41 @@
           <div class="row field">
             <button id="sendToSearch">Send to vocabulary search →</button>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-preview">
+      <h2>Preview &amp; edit</h2>
+      <p class="status">
+        Load a vocabulary.csv (or paste one, or send it here from another tab), then edit cells
+        directly in the table — <code>category</code> offers the existing categories as suggestions.
+        Every edit updates the raw CSV underneath; switch to "Raw CSV" any time to copy it out or paste
+        a whole new version in and apply it back to the table.
+      </p>
+
+      <div class="row field">
+        <button id="previewLoadRu">Load ru/data/vocabulary.csv</button>
+        <button id="previewLoadEn">Load en/data/vocabulary.csv</button>
+        <button id="addRowBtn">+ Add row</button>
+        <span class="status" id="previewLoadStatus">No CSV loaded yet.</span>
+      </div>
+
+      <nav class="subtabs">
+        <button class="subtab active" data-view="table">Table</button>
+        <button class="subtab" data-view="raw">Raw CSV</button>
+      </nav>
+
+      <div class="subpanel active" id="view-table">
+        <div id="previewTable"></div>
+      </div>
+
+      <div class="subpanel" id="view-raw">
+        <textarea id="previewCsv" rows="16" placeholder="key;frontText;frontDetails;backText;backDetails;category&#10;..."></textarea>
+        <div class="row field">
+          <button class="primary" id="applyRawBtn">Apply to table ↑</button>
+          <button data-copy="previewCsv">Copy</button>
+          <span class="status" id="previewRawStatus"></span>
         </div>
       </div>
     </section>
@@ -305,6 +372,137 @@
       switchTab("search");
     });
 
+    // --- Shared: fetch a CSV file relative to this page -------------------------------------------------
+
+    async function fetchText(relativePath) {
+      const res = await fetch(relativePath);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.text();
+    }
+
+    // --- Preview & edit -------------------------------------------------
+
+    const CSV_FIELDS = ["key", "frontText", "frontDetails", "backText", "backDetails", "category"];
+    const CATEGORY_VALUES = [
+      "существительное", "глагол", "прилагательное", "наречие", "местоимение",
+      "союз", "предлог", "частица", "междометие", "причастие", "выражение",
+    ];
+
+    let previewTable = null;
+
+    function previewColumns() {
+      return [
+        {
+          title: "", field: "_delete", formatter: "buttonCross", width: 36, hozAlign: "center",
+          headerSort: false,
+          cellClick: (e, cell) => cell.getRow().delete(),
+        },
+        { title: "key", field: "key", editor: "input", width: 170 },
+        { title: "frontText", field: "frontText", editor: "input", width: 170 },
+        { title: "frontDetails", field: "frontDetails", editor: "input", width: 170 },
+        { title: "backText", field: "backText", editor: "input", width: 190 },
+        { title: "backDetails", field: "backDetails", editor: "input", width: 150 },
+        {
+          title: "category", field: "category", editor: "list", minWidth: 160,
+          editorParams: { values: CATEGORY_VALUES, autocomplete: true, freetext: true, listOnEmpty: true, clearable: true },
+        },
+      ];
+    }
+
+    function initPreviewTable(data) {
+      if (previewTable) {
+        previewTable.setData(data);
+        return;
+      }
+      previewTable = new Tabulator("#previewTable", {
+        data,
+        layout: "fitColumns",
+        height: "480px",
+        columns: previewColumns(),
+      });
+      previewTable.on("cellEdited", syncPreviewTableToRaw);
+      previewTable.on("rowDeleted", syncPreviewTableToRaw);
+      previewTable.on("rowAdded", syncPreviewTableToRaw);
+      previewTable.on("dataLoaded", syncPreviewTableToRaw);
+    }
+
+    function syncPreviewTableToRaw() {
+      if (!previewTable) return;
+      const header = CSV_FIELDS.join(";");
+      const rows = previewTable
+        .getData()
+        .map((row) => CSV_FIELDS.map((f) => csvField((row[f] ?? "").toString())).join(";"));
+      document.getElementById("previewCsv").value = [header, ...rows].join("\n");
+    }
+
+    async function loadPreviewFromPath(relativePath, sourceLabel) {
+      const statusEl = document.getElementById("previewLoadStatus");
+      try {
+        statusEl.textContent = `Loading ${sourceLabel}…`;
+        const text = await fetchText(relativePath);
+        const parsed = Papa.parse(text.trim(), { header: true, skipEmptyLines: true });
+        initPreviewTable(parsed.data);
+        statusEl.textContent = `Loaded ${parsed.data.length} row(s) from ${sourceLabel}.`;
+      } catch (err) {
+        statusEl.textContent =
+          `Could not load ${sourceLabel} (${err.message}). If you opened this file directly ` +
+          `(file://), fetch is blocked — paste CSV into the Raw CSV view instead, or serve the ` +
+          `site locally (see README).`;
+      }
+    }
+
+    function loadPreviewFromCsvText(text, sourceLabel) {
+      const parsed = Papa.parse(text.trim(), { header: true, skipEmptyLines: true });
+      initPreviewTable(parsed.data);
+      document.getElementById("previewLoadStatus").textContent =
+        `Loaded ${parsed.data.length} row(s) from ${sourceLabel}.`;
+      switchTab("preview");
+    }
+
+    document.getElementById("previewLoadRu").addEventListener("click", () =>
+      loadPreviewFromPath("../ru/data/vocabulary.csv", "ru/data/vocabulary.csv")
+    );
+    document.getElementById("previewLoadEn").addEventListener("click", () =>
+      loadPreviewFromPath("../en/data/vocabulary.csv", "en/data/vocabulary.csv")
+    );
+    document.getElementById("addRowBtn").addEventListener("click", () => {
+      if (!previewTable) initPreviewTable([]);
+      previewTable.addRow({ key: "", frontText: "", frontDetails: "", backText: "", backDetails: "", category: "" });
+    });
+    document.getElementById("applyRawBtn").addEventListener("click", () => {
+      const text = document.getElementById("previewCsv").value;
+      const statusEl = document.getElementById("previewRawStatus");
+      const parsed = Papa.parse(text.trim(), { header: true, skipEmptyLines: true });
+      if (parsed.errors.length) {
+        statusEl.textContent = `Parse error: ${parsed.errors[0].message}`;
+        return;
+      }
+      initPreviewTable(parsed.data);
+      statusEl.textContent = `Applied ${parsed.data.length} row(s) to the table.`;
+    });
+
+    document.getElementById("openInPreviewFromCsv").addEventListener("click", () => {
+      const text = document.getElementById("csvInput").value;
+      if (!text.trim()) return;
+      loadPreviewFromCsvText(text, "CSV → JSON & Markdown input");
+    });
+    document.getElementById("openInPreviewFromMd").addEventListener("click", () => {
+      const text = document.getElementById("mdCsvOutput").value;
+      if (!text.trim()) return;
+      loadPreviewFromCsvText(text, "Markdown → CSV output");
+    });
+
+    document.querySelectorAll(".subtab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".subtab").forEach((b) => b.classList.toggle("active", b === btn));
+        document
+          .querySelectorAll(".subpanel")
+          .forEach((p) => p.classList.toggle("active", p.id === `view-${btn.dataset.view}`));
+        if (btn.dataset.view === "raw") syncPreviewTableToRaw();
+        if (btn.dataset.view === "table" && previewTable) previewTable.redraw(true);
+      });
+    });
+
     // --- Vocabulary search -------------------------------------------------------
 
     let vocabRows = []; // [{ row, raw }]
@@ -322,9 +520,7 @@
       const statusEl = document.getElementById("loadStatus");
       try {
         statusEl.textContent = `Loading ${sourceLabel}…`;
-        const res = await fetch(relativePath);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        loadVocabFromText(await res.text(), sourceLabel);
+        loadVocabFromText(await fetchText(relativePath), sourceLabel);
       } catch (err) {
         statusEl.textContent =
           `Could not load ${sourceLabel} (${err.message}). If you opened this file directly ` +
