@@ -125,7 +125,8 @@
       <h2>Markdown → CSV</h2>
       <p class="status">
         Paste already-published lines like <code>🔸 das Schaf / die Schafe - овца</code> (the ✱✱bold✱✱
-        markers are optional — plain-text copies work too). Each line becomes a CSV row. The
+        markers are optional — plain-text copies work too, and <code>-</code>/<code>–</code>/<code>—</code>
+        are all accepted before the translation). Each line becomes a CSV row. The
         <code>key</code> column is filled from <code>frontText</code>, lower-cased and slugified; for a
         noun (<code>der</code>/<code>die</code>/<code>das</code> ...) the article is dropped first. Check the
         generated keys — they don't include the transliterated backText half some existing keys use, so
@@ -327,11 +328,11 @@
       let s = line.trim().replace(/^🔸\s*/, "").replace(/\*\*/g, "").trim();
       if (!s) return null;
 
-      const sepIdx = s.indexOf(" - ");
-      if (sepIdx === -1) return null;
+      const sepMatch = s.match(/\s[-–—]\s/);
+      if (!sepMatch) return null;
 
-      const frontPart = s.slice(0, sepIdx).trim();
-      const backText = s.slice(sepIdx + 3).trim();
+      const frontPart = s.slice(0, sepMatch.index).trim();
+      const backText = s.slice(sepMatch.index + sepMatch[0].length).trim();
 
       const slashIdx = frontPart.indexOf(" / ");
       const frontText = slashIdx === -1 ? frontPart : frontPart.slice(0, slashIdx).trim();
