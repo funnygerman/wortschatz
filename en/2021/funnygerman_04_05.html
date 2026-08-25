@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Smile, learn, repeat. Learn new words from FunnyGerman</title>
+    <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+    <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+    <p class="fc-credit">Made with ♥ by Claude — for <a href="https://t.me/EnglishFunnyGerman" target="_blank"
+            rel="noopener">FunnyGerman</a></p>
+
+    <script type="module">
+        import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+        const cards = [
+            {
+                "key": "fachgebiet-subject-area",
+                "frontText": "das Fachgebiet",
+                "frontDetails": "die Fachgebiete",
+                "backText": "subject area, field of expertise",
+                "category": "noun"
+            },
+            {
+                "key": "antworten-to-answer",
+                "frontText": "antworten",
+                "frontDetails": "antwortete / geantwortet",
+                "backText": "to reply, to answer",
+                "category": "verb"
+            },
+            {
+                "key": "frage-question",
+                "frontText": "die Frage",
+                "frontDetails": "die Fragen",
+                "backText": "question",
+                "category": "noun"
+            },
+            {
+                "key": "masche-mesh",
+                "frontText": "die Masche",
+                "frontDetails": "die Maschen",
+                "backText": "mesh, loop",
+                "category": "noun"
+            },
+            {
+                "key": "tornetz-goal-net",
+                "frontText": "das Tornetz",
+                "frontDetails": "die Tornetze",
+                "backText": "goal net",
+                "category": "noun"
+            }
+        ];
+
+        openDeck(cards, { lang: "en", dictionary: "de-en" });
+    </script>
+</body>
+
+</html>
