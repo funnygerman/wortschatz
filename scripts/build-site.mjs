@@ -19,6 +19,12 @@ const CHANNELS = {
   randomgerman: "Случайные немецкие слова",
 };
 
+// Pages that are not a dated deck — they live at the language folder's root and
+// carry no date in the filename. Keyed by filename, labelled per language.
+const PAGES = {
+  vocabulary: { ru: "Весь словарь", en: "Full vocabulary" },
+};
+
 const MONTHS = {
   ru: ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"],
   en: ["January","February","March","April","May","June","July","August","September","October","November","December"],
@@ -29,6 +35,7 @@ const TEXT = {
     lede: "Карточки для заучивания слов. Открывай любую колоду прямо в браузере.",
     empty: "Колод пока нет.",
     back: "← Wortschatz",
+    pages: "Все слова",
     telegram: "Телеграм:",
     channels: [
       ["https://t.me/korotko_de", "Коротко о немецком"],
@@ -40,6 +47,7 @@ const TEXT = {
     lede: "Vocabulary flashcards. Open any deck straight in the browser.",
     empty: "No decks yet.",
     back: "← Wortschatz",
+    pages: "All words",
     telegram: "Telegram:",
     channels: [["https://t.me/EnglishFunnyGerman", "FunnyGerman in English"]],
   },
@@ -70,11 +78,15 @@ function describe(file) {
   const name = path.basename(file, ".html");
   const yearDir = file.split("/").find((seg) => /^\d{4}$/.test(seg));
   const [prefix, dd, mm, yy] = name.split("_");
+  const day = Number(dd);
+  const month = Number(mm);
   return {
     file,
+    name,
     year: yy ? `20${yy}` : yearDir ?? "",
-    day: Number(dd),
-    month: Number(mm),
+    day,
+    month,
+    dated: Number.isInteger(day) && Number.isInteger(month),
     channel: CHANNELS[prefix?.toLowerCase()] ?? prefix,
   };
 }
@@ -129,9 +141,15 @@ for (const { dir, lang, heading } of LANGS) {
     await copyFile(path.join(root, file), path.join(out, file));
   }
 
-  const decks = files
+  const entries = files
     .filter((f) => f.endsWith(".html") && !f.endsWith("index.html") && !f.includes("/data/"))
-    .map(describe)
+    .map(describe);
+
+  // A page with no date in its filename — the whole-vocabulary deck — is not part
+  // of the dated run; it goes in its own group at the top.
+  const pages = entries.filter((e) => !e.dated);
+  const decks = entries
+    .filter((e) => e.dated)
     // Newest first.
     .sort((a, b) =>
       `${b.year}-${b.month}-${b.day}`.localeCompare(`${a.year}-${a.month}-${a.day}`, undefined, {
@@ -139,28 +157,33 @@ for (const { dir, lang, heading } of LANGS) {
       })
     );
 
-  const byYear = new Map();
+  const groups = new Map();
+  if (pages.length) groups.set(TEXT[lang].pages, pages);
   for (const deck of decks) {
-    if (!byYear.has(deck.year)) byYear.set(deck.year, []);
-    byYear.get(deck.year).push(deck);
+    if (!groups.has(deck.year)) groups.set(deck.year, []);
+    groups.get(deck.year).push(deck);
   }
 
   let list = `      <p class="status">${escape(TEXT[lang].empty)}</p>`;
-  if (decks.length) {
-    list = [...byYear]
-      .map(([year, group]) => {
+  if (entries.length) {
+    list = [...groups]
+      .map(([heading, group]) => {
         const items = group
-          .map((deck) => {
-            const month = MONTHS[lang][deck.month - 1];
-            const date = month ? `${deck.day} ${month}` : "";
+          .map((entry) => {
+            const month = MONTHS[lang][entry.month - 1];
+            const date = entry.dated && month ? `${entry.day} ${month}` : "";
+            const label = entry.dated
+              ? entry.channel
+              : PAGES[entry.name]?.[lang] ?? entry.name;
             // Index pages sit inside the language folder, so link relative to it.
-            const href = deck.file.slice(dir.length + 1);
+            const href = entry.file.slice(dir.length + 1);
+            const meta = date ? `<span class="meta">${escape(date)}</span>` : "";
             return `          <li>
-            <a href="${escape(href)}"><span>${escape(deck.channel)}</span><span class="meta">${escape(date)}</span></a>
+            <a href="${escape(href)}"><span>${escape(label)}</span>${meta}</a>
           </li>`;
           })
           .join("\n");
-        const title = year ? `      <h2>${escape(year)}</h2>\n` : "";
+        const title = heading ? `      <h2>${escape(heading)}</h2>\n` : "";
         return `${title}      <ul>\n${items}\n      </ul>`;
       })
       .join("\n");
@@ -181,7 +204,7 @@ ${list}
 ${footer(lang, "    ")}`,
     })
   );
-  built.push(`${dir}: ${decks.length} deck(s)`);
+  built.push(`${dir}: ${decks.length} deck(s), ${pages.length} page(s)`);
 }
 
 const picker = LANGS.map(
