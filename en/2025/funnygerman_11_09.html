@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Smile, learn, repeat. Learn new words from FunnyGerman</title>
+    <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+    <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+    <p class="fc-credit">Made with ♥ by Claude — for <a href="https://t.me/EnglishFunnyGerman" target="_blank"
+            rel="noopener">FunnyGerman</a></p>
+
+    <script type="module">
+        import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+        const cards = [
+            {
+                "key": "rufen-to-call",
+                "frontText": "rufen",
+                "frontDetails": "rief / gerufen",
+                "backText": "to call, to shout",
+                "category": "verb"
+            },
+            {
+                "key": "krankenschwester-nurse",
+                "frontText": "die Krankenschwester",
+                "frontDetails": "die Krankenschwestern",
+                "backText": "nurse",
+                "category": "noun"
+            },
+            {
+                "key": "zimmer-room",
+                "frontText": "das Zimmer",
+                "frontDetails": "die Zimmer",
+                "backText": "room",
+                "category": "noun"
+            },
+            {
+                "key": "sterben-to-die",
+                "frontText": "sterben",
+                "frontDetails": "starb / gestorben",
+                "backText": "to die",
+                "category": "noun"
+            },
+            {
+                "key": "langsam-slowly",
+                "frontText": "langsam",
+                "backText": "slowly, gradually",
+                "category": "adverb"
+            },
+            {
+                "key": "übertreiben-to-exaggerate",
+                "frontText": "übertreiben",
+                "frontDetails": "übertrieb / übertrieben",
+                "backText": "to exaggerate, to overdo",
+                "category": "verb"
+            }
+        ];
+
+        openDeck(cards, { lang: "en", dictionary: "de-en" });
+    </script>
+</body>
+
+</html>

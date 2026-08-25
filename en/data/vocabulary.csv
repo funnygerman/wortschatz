@@ -7,12 +7,17 @@ elefant-elephant;der Elefant;die Elefanten;the elephant;;noun
 fachgebiet-subject-area;das Fachgebiet;die Fachgebiete;subject area, field of expertise;;noun
 frage-question;die Frage;die Fragen;"question";;noun
 gelingen;gelingen;gelang / gelungen;to succeed, to turn out well;;verb
-in-die-hände-klatschen-to-clap-ones-hands;in die Hände klatschen;klatschte / geklatscht;"to clap one's hands";;expression
+in-die-hände-klatschen-to-clap-ones-hands;in die Hände klatschen;klatschte / geklatscht;to clap one's hands;;expression
+key;frontText;frontDetails;backText;backDetails;category
+krankenschwester-nurse;die Krankenschwester;die Krankenschwestern;nurse;;noun
+langsam-slowly;langsam;;"slowly, gradually";;adverb
 lebkuchenhaus;das Lebkuchenhaus;die Lebkuchenhäuser;gingerbread house;;noun
 masche-mesh;die Masche;die Maschen;mesh, loop;;noun
 passant-passerby;der Passant;die Passanten;the passerby;;noun
 plastikdinosaurier;der Plastikdinosaurier;die Plastikdinosaurier;"plastic dinosaur";;noun
 rausgehen-to-go-out;rausgehen;ging raus / rausgegangen;to go out;;verb
+rufen-to-call;rufen;rief / gerufen;to call, to shout;;verb
+sterben-to-die;sterben;starb / gestorben;to die;;noun
 straße-street;die Straße;die Straßen;the street;;noun
 tag-day;der Tag;die Tage;day;;noun
 tornetz-goal-net;das Tornetz;die Tornetze;goal net;;noun
@@ -20,3 +25,5 @@ verjagen-to-chase-away;verjagen;verjagte / verjagt;to chase away;;verb
 welt-world;die Welt;;the world;;noun
 wirken-to-work;wirken;wirkte / gewirkt;to work, to have an effect;;verb
 zeigen-to-show;zeigen;zeigte / gezeigt;to show;;verb
+zimmer-room;das Zimmer;die Zimmer;room;;noun
+übertreiben-to-exaggerate;übertreiben;übertrieb / übertrieben;to exaggerate, to overdo;;verb
