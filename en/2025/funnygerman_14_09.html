@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Smile, learn, repeat. Learn new words from FunnyGerman</title>
+    <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+    <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+    <p class="fc-credit">Made with ♥ by Claude — for <a href="https://t.me/EnglishFunnyGerman" target="_blank"
+            rel="noopener">FunnyGerman</a></p>
+
+    <script type="module">
+        import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+        const cards = [
+            {
+                "key": "rappelvoll-jam-packed",
+                "frontText": "rappelvoll",
+                "backText": "jam-packed, crammed",
+                "category": "adjective"
+            },
+            {
+                "key": "flugzeug-airplane",
+                "frontText": "das Flugzeug",
+                "frontDetails": "die Flugzeuge",
+                "backText": "airplane",
+                "category": "noun"
+            },
+            {
+                "key": "vortrag-lecture",
+                "frontText": "der Vortrag",
+                "frontDetails": "die Vorträge",
+                "backText": "lecture, talk",
+                "category": "noun"
+            },
+            {
+                "key": "ureinwohner-native-inhabitant",
+                "frontText": "der Ureinwohner",
+                "frontDetails": "die Ureinwohner",
+                "backText": "native inhabitant, indigenous person",
+                "category": "noun"
+            },
+            {
+                "key": "liebhaber-lover",
+                "frontText": "der Liebhaber",
+                "frontDetails": "die Liebhaber",
+                "backText": "lover",
+                "category": "noun"
+            },
+            {
+                "key": "spaß-fun",
+                "frontText": "der Spaß",
+                "backText": "fun, pleasure",
+                "category": "noun"
+            },
+            {
+                "key": "ausstrecken-to-stretch-out",
+                "frontText": "ausstrecken",
+                "frontDetails": "streckte aus / ausgestreckt",
+                "backText": "to stretch out, to extend, to reach out",
+                "category": "verb"
+            }
+        ];
+
+        openDeck(cards, { lang: "en", dictionary: "de-en" });
+    </script>
+</body>
+
+</html>
