@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Smile, learn, repeat. Learn new words from FunnyGerman</title>
+    <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+    <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+    <p class="fc-credit">Made with ♥ by Claude — for <a href="https://t.me/EnglishFunnyGerman" target="_blank"
+            rel="noopener">FunnyGerman</a></p>
+
+    <script type="module">
+        import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+        const cards = [
+            {
+                "key": "haarschneiden-haircut",
+                "frontText": "das Haarschneiden",
+                "backText": "haircut",
+                "category": "noun"
+            },
+            {
+                "key": "frisör-hairdresser",
+                "frontText": "der Frisör",
+                "frontDetails": "die Frisöre",
+                "backText": "hairdresser",
+                "category": "noun"
+            },
+            {
+                "key": "behalten-to-keep",
+                "frontText": "behalten",
+                "frontDetails": "behielt / behalten",
+                "backText": "to keep, to retain",
+                "category": "verb"
+            },
+            {
+                "key": "unbedingt-absolutely",
+                "frontText": "unbedingt",
+                "backText": "absolutely, definitely",
+                "category": "adverb"
+            },
+            {
+                "key": "einpacken-to-pack",
+                "frontText": "einpacken",
+                "frontDetails": "packte ein / eingepackt",
+                "backText": "to pack, to wrap up",
+                "category": "verb"
+            }
+        ];
+
+        openDeck(cards, { lang: "en", dictionary: "de-en" });
+    </script>
+</body>
+
+</html>

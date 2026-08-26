@@ -2,6 +2,7 @@ key;frontText;frontDetails;backText;backDetails;category
 abenteuer;das Abenteuer;die Abenteuer;adventure;;noun
 antworten-to-answer;antworten;antwortete / geantwortet;to reply, to answer;;verb
 ausstrecken-to-stretch-out;ausstrecken;streckte aus / ausgestreckt;to stretch out, to extend, to reach out;;verb
+behalten-to-keep;behalten;behielt / behalten;to keep, to retain;;verb
 bekanntlich;bekanntlich;;as is well known;;adverb
 bekloppt-crazy;bekloppt;;crazy, nuts;;adjective
 damit-so-that;damit;;so that, in order to;;adverb
@@ -9,15 +10,18 @@ daneben;daneben;;next to it, beside it;;adverb
 durch-through;durch;;through, along;;preposition
 egal;egal;;indifferent, not important, doesn’t matter;;adjective
 eier-haben-to-have-balls;Eier haben;;"literally ""to have eggs""";"idiomatically ""to have courage/guts/balls""";expression
-eigentlich-actually;eigentlich;;"actually, in fact";;adverb
+eigentlich-actually;eigentlich;;actually, in fact;;adverb
+einpacken-to-pack;einpacken;packte ein / eingepackt;"to pack, to wrap up";;verb
 elefant-elephant;der Elefant;die Elefanten;the elephant;;noun
 erzählen;erzählen;erzählte / erzählt;to tell, to narrate;;verb
 essen-food;das Essen;;food, meal;;noun
 fachgebiet-subject-area;das Fachgebiet;die Fachgebiete;subject area, field of expertise;;noun
 flugzeug-airplane;das Flugzeug;die Flugzeuge;airplane;;noun
 frage-question;die Frage;die Fragen;question;;noun
+frisör-hairdresser;der Frisör;die Frisöre;hairdresser;;noun
 frühstück-breakfast;das Frühstück;die Frühstücke;"breakfast";;noun
 gelingen;gelingen;gelang / gelungen;to succeed, to turn out well;;verb
+haarschneiden-haircut;das Haarschneiden;;haircut;;noun
 henkel-handle;der Henkel;die Henkel;handle;;noun
 in-die-hände-klatschen-to-clap-ones-hands;in die Hände klatschen;klatschte / geklatscht;to clap one's hands;;expression
 krankenschwester-nurse;die Krankenschwester;die Krankenschwestern;nurse;;noun
@@ -43,6 +47,7 @@ straße-street;die Straße;die Straßen;the street;;noun
 tag-day;der Tag;die Tage;day;;noun
 tasse-cup;die Tasse;die Tassen;cup;;noun
 tornetz-goal-net;das Tornetz;die Tornetze;goal net;;noun
+unbedingt-absolutely;unbedingt;;absolutely, definitely;;adverb
 ureinwohner-native-inhabitant;der Ureinwohner;die Ureinwohner;native inhabitant, indigenous person;;noun
 verjagen-to-chase-away;verjagen;verjagte / verjagt;to chase away;;verb
 verrückt-insane;verrückt;;insane, crazy;;adjective
