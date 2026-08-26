@@ -3,6 +3,7 @@ abenteuer;das Abenteuer;die Abenteuer;adventure;;noun
 antworten-to-answer;antworten;antwortete / geantwortet;to reply, to answer;;verb
 ausstrecken-to-stretch-out;ausstrecken;streckte aus / ausgestreckt;to stretch out, to extend, to reach out;;verb
 bekanntlich;bekanntlich;;as is well known;;adverb
+bekloppt-crazy;bekloppt;;crazy, nuts;;adjective
 daneben;daneben;;next to it, beside it;;adverb
 durch-through;durch;;through, along;;preposition
 egal;egal;;indifferent, not important, doesn’t matter;;adjective
@@ -13,8 +14,10 @@ erzählen;erzählen;erzählte / erzählt;to tell, to narrate;;verb
 essen-food;das Essen;;food, meal;;noun
 fachgebiet-subject-area;das Fachgebiet;die Fachgebiete;subject area, field of expertise;;noun
 flugzeug-airplane;das Flugzeug;die Flugzeuge;airplane;;noun
-frage-question;die Frage;die Fragen;"question";;noun
+frage-question;die Frage;die Fragen;question;;noun
+frühstück-breakfast;das Frühstück;die Frühstücke;"breakfast";;noun
 gelingen;gelingen;gelang / gelungen;to succeed, to turn out well;;verb
+henkel-handle;der Henkel;die Henkel;handle;;noun
 in-die-hände-klatschen-to-clap-ones-hands;in die Hände klatschen;klatschte / geklatscht;to clap one's hands;;expression
 krankenschwester-nurse;die Krankenschwester;die Krankenschwestern;nurse;;noun
 kriegen-to-get;kriegen;kriegte / gekriegt;to get, to receive;;verb
@@ -30,13 +33,16 @@ plastikdinosaurier;der Plastikdinosaurier;die Plastikdinosaurier;plastic dinosau
 rappelvoll-jam-packed;rappelvoll;;"jam-packed, crammed";;adjective
 rausgehen-to-go-out;rausgehen;ging raus / rausgegangen;to go out;;verb
 rufen-to-call;rufen;rief / gerufen;to call, to shout;;verb
+sich-beschweren-to-complain;sich beschweren;beschwerte / beschwert;to complain;;verb
 spaß-fun;der Spaß;;fun, pleasure;;noun
 sterben-to-die;sterben;starb / gestorben;to die;;noun
 straße-street;die Straße;die Straßen;the street;;noun
 tag-day;der Tag;die Tage;day;;noun
+tasse-cup;die Tasse;die Tassen;cup;;noun
 tornetz-goal-net;das Tornetz;die Tornetze;goal net;;noun
 ureinwohner-native-inhabitant;der Ureinwohner;die Ureinwohner;native inhabitant, indigenous person;;noun
 verjagen-to-chase-away;verjagen;verjagte / verjagt;to chase away;;verb
+verrückt-insane;verrückt;;insane, crazy;;adjective
 vortrag-lecture;der Vortrag;die Vorträge;lecture, talk;;noun
 welt-world;die Welt;;the world;;noun
 wirken-to-work;wirken;wirkte / gewirkt;to work, to have an effect;;verb
@@ -44,3 +50,4 @@ wüste;die Wüste;die Wüsten;desert;;noun
 zeigen-to-show;zeigen;zeigte / gezeigt;to show;;verb
 zimmer-room;das Zimmer;die Zimmer;room;;noun
 übertreiben-to-exaggerate;übertreiben;übertrieb / übertrieben;to exaggerate, to overdo;;verb
+übrig-lassen-to-leave-behind;übrig lassen;ließ übrig / übrig gelassen;to leave behind;;verb

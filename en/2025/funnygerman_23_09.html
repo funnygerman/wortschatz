@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Smile, learn, repeat. Learn new words from FunnyGerman</title>
+    <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+    <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+    <p class="fc-credit">Made with ♥ by Claude — for <a href="https://t.me/EnglishFunnyGerman" target="_blank"
+            rel="noopener">FunnyGerman</a></p>
+
+    <script type="module">
+        import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+        const cards = [
+            {
+                "key": "sich-beschweren-to-complain",
+                "frontText": "sich beschweren",
+                "frontDetails": "beschwerte / beschwert",
+                "backText": "to complain",
+                "category": "verb"
+            },
+            {
+                "key": "bekloppt-crazy",
+                "frontText": "bekloppt",
+                "backText": "crazy, nuts",
+                "category": "adjective"
+            },
+            {
+                "key": "frühstück-breakfast",
+                "frontText": "das Frühstück",
+                "frontDetails": "die Frühstücke",
+                "backText": "breakfast",
+                "category": "noun"
+            },
+            {
+                "key": "henkel-handle",
+                "frontText": "der Henkel",
+                "frontDetails": "die Henkel",
+                "backText": "handle",
+                "category": "noun"
+            },
+            {
+                "key": "übrig-lassen-to-leave-behind",
+                "frontText": "übrig lassen",
+                "frontDetails": "ließ übrig / übrig gelassen",
+                "backText": "to leave behind",
+                "category": "verb"
+            },
+            {
+                "key": "verrückt-insane",
+                "frontText": "verrückt",
+                "backText": "insane, crazy",
+                "category": "adjective"
+            },
+            {
+                "key": "tasse-cup",
+                "frontText": "die Tasse",
+                "frontDetails": "die Tassen",
+                "backText": "cup",
+                "category": "noun"
+            }
+        ];
+
+        openDeck(cards, { lang: "en", dictionary: "de-en" });
+    </script>
+</body>
+
+</html>
