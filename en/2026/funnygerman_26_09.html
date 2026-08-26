@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Smile, learn, repeat. Learn new words from FunnyGerman</title>
+    <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+    <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+    <p class="fc-credit">Made with ♥ by Claude — for <a href="https://t.me/EnglishFunnyGerman" target="_blank"
+            rel="noopener">FunnyGerman</a></p>
+
+    <script type="module">
+        import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+        const cards = [
+            {
+                "key": "warum-why",
+                "frontText": "warum",
+                "backText": "why",
+                "category": "adverb"
+            },
+            {
+                "key": "kurz-short",
+                "frontText": "kurz",
+                "backText": "short",
+                "category": "adjective"
+            },
+            {
+                "key": "damit-so-that",
+                "frontText": "damit",
+                "backText": "so that, in order to",
+                "category": "adverb"
+            },
+            {
+                "key": "mann-man",
+                "frontText": "der Mann",
+                "frontDetails": "die Männer",
+                "backText": "man / men",
+                "category": "noun"
+            },
+            {
+                "key": "verstehen-to-understand",
+                "frontText": "verstehen",
+                "frontDetails": "verstand / verstanden",
+                "backText": "to understand",
+                "category": "verb"
+            }
+        ];
+
+        openDeck(cards, { lang: "en", dictionary: "de-en" });
+    </script>
+</body>
+
+</html>
