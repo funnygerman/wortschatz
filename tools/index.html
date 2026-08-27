@@ -32,6 +32,11 @@
     button:hover { border-color: var(--muted); }
     button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
     .status { font-size: .85rem; color: var(--muted); }
+    #keyModuleError {
+      display: none; margin: 1rem 0; padding: .7rem 1rem; border-radius: .5rem;
+      border: 1px solid #a33; background: var(--card); color: #d33; font-size: .9rem;
+    }
+    #keyModuleError.visible { display: block; }
     .out-head { display: flex; justify-content: space-between; align-items: baseline; }
 
     .tabs { display: flex; gap: .5rem; border-bottom: 1px solid var(--line); margin-top: 1.5rem; }
@@ -76,6 +81,8 @@
     <a class="back" href="../">← Wortschatz</a>
     <h1>Tools</h1>
     <p class="lede">Deck authoring helpers. Not part of the flashcard site — used to prepare decks.</p>
+
+    <div id="keyModuleError" role="alert"></div>
 
     <nav class="tabs" role="tablist">
       <button class="tab active" data-tab="csvToJson" role="tab" aria-selected="true">CSV → JSON &amp; Markdown</button>
@@ -128,11 +135,11 @@
         markers are optional — plain-text copies work too, and <code>-</code>/<code>–</code>/<code>—</code>
         are all accepted before the translation). Each line becomes a CSV row. The
         <code>key</code> column is filled from <code>frontText</code> <em>and</em> <code>backText</code>,
-        by the same rule the player uses when a deck omits the key
-        (<code>v2/src/key.js</code> in <code>funnygerman/flashcards</code>): lower-cased and hyphenated,
-        the article dropped from a noun, umlauts written out (<code>fünf</code> → <code>fuenf</code>) and
-        Cyrillic transliterated (<code>чем</code> → <code>chem</code>). Both sides, so the two
-        <code>laufen</code> cards no longer collide on one key.
+        by calling the actual rule the player uses when a deck omits the key — imported live from
+        <code>v2/src/key.js</code> in <code>funnygerman/flashcards</code>, not a copy of it. Lower-cased
+        and hyphenated, the article dropped from a noun, a card's own script kept as written
+        (<code>fünf</code> stays <code>fünf</code>, <code>чем</code> stays <code>чем</code>). Both sides,
+        so the two <code>laufen</code> cards no longer collide on one key.
       </p>
 
       <div class="field">
@@ -342,55 +349,55 @@
 
     // --- Keys -----------------------------------------------------------
     //
-    // The same rule the flashcards player uses: funnygerman/flashcards,
-    // v2/src/key.js. A deck file there may omit `key` entirely and openDeck
-    // derives it from the card's two words, so anything generating a deck has
-    // to derive it the same way or the two disagree about what a card is.
+    // The rule itself lives in funnygerman/flashcards, not here — v2/src/key.js,
+    // fetched live from that project's own deployed site rather than copied in.
+    // A deck file there may omit `key` entirely and openDeck derives it from
+    // the card's two words, so anything generating a deck has to derive it the
+    // same way or the two disagree about what a card is; importing the actual
+    // function means they can't drift apart the way a hand-ported copy already
+    // had, once, when this file grew its own Cyrillic table that the player
+    // never had. See v2/src/key.js's own header comment for the other half of
+    // this: it is written expecting exactly this import, and its path and its
+    // exports' shapes are meant to stay stable because of it.
     //
-    // Both sides, not the front alone, because a front is not unique — `laufen`
-    // is two cards and only the back tells `to run` from `to operate`. The
-    // front-only keys this tool used to emit collided exactly there, which is
-    // what the old "adjust for uniqueness if needed" note was apologising for.
-    //
-    // A key is derived ONCE, when a row is first added, and then belongs to the
-    // row: fillBlankKeys() below never touches a cell that already has one.
-    // That is deliberate and it is the whole migration story. A reader's
-    // schedule and dictionary live in their own browser under these keys, so a
-    // key that moved because someone reworded a translation does not correct
-    // that card, it abandons it — an empty schedule and an orphan nobody
-    // claims. Written into the CSV, the key stops moving for good.
+    // Kicked off once, immediately, rather than on first use, so the fetch is
+    // already in flight by the time a reader has finished pasting anything in.
+    // `keyRule` is the single promise every key-deriving feature below awaits;
+    // nothing here duplicates the rule as a fallback if the fetch fails,
+    // because a silently-diverged copy is worse than a feature that says
+    // plainly it isn't available right now.
+    const KEY_MODULE_URL = "https://funnygerman.github.io/flashcards/v2/src/key.js";
+    const keyRule = import(KEY_MODULE_URL);
 
-    const CYRILLIC = {
-      а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e", ж: "zh", з: "z",
-      и: "i", й: "y", к: "k", л: "l", м: "m", н: "n", о: "o", п: "p", р: "r",
-      с: "s", т: "t", у: "u", ф: "f", х: "h", ц: "c", ч: "ch", ш: "sh",
-      щ: "sch", ъ: "", ы: "i", ь: "", э: "e", ю: "yu", я: "ya",
-    };
+    /* Attached here, synchronously, purely so the browser does not report an
+       "unhandled promise rejection" the moment the fetch fails — before
+       anyone has clicked a button, nothing has awaited `keyRule` yet, and a
+       promise that rejects with no handler attached by the next microtask
+       checkpoint is reported as unhandled regardless of what catches it
+       later. withKeyRule() below does the actual handling, each time a
+       feature needs it; this only logs once so the real cause is still in
+       the console for whoever opens devtools. */
+    keyRule.catch((err) => console.error("Could not load the key rule from", KEY_MODULE_URL, err));
 
-    // German the way German spells itself without the mark — `fünf` is `fuenf`,
-    // not `funf`. Russian in the transliteration the existing keys already use:
-    // `чем` is `chem`, `другой` is `drugoy`.
-    function slug(text) {
-      let out = String(text ?? "")
-        .toLowerCase()
-        .replace(/^(der|die|das)\s+/, "")
-        .replace(/ä/g, "ae")
-        .replace(/ö/g, "oe")
-        .replace(/ü/g, "ue")
-        .replace(/ß/g, "ss")
-        .replace(/[а-яё]/g, (c) => CYRILLIC[c] ?? "");
-
-      return out
-        .normalize("NFD")
-        .replace(/\p{Diacritic}/gu, "")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
-    }
-
-    // Empty rather than a made-up key: a counter or a hash would be unique and
-    // meaningless, and two decks naming the same word would disagree about it.
-    function deriveKey(row) {
-      return [slug(row.frontText), slug(row.backText)].filter(Boolean).join("-");
+    // Awaited once at the top of each handler that needs it, rather than on
+    // every row — the handler gets back the real `deriveKey` (or null) and
+    // everything after that line runs exactly as it did when the rule was
+    // vendored in. A network hiccup takes out key generation specifically:
+    // tab switching, search, and editing the preview table by hand all keep
+    // working regardless, since none of them touch this promise.
+    async function withKeyRule() {
+      const banner = document.getElementById("keyModuleError");
+      try {
+        const { deriveKey } = await keyRule;
+        banner.classList.remove("visible");
+        return deriveKey;
+      } catch {
+        banner.textContent =
+          `Could not load the key rule from ${KEY_MODULE_URL} — keys can't be generated right now. ` +
+          "Check your connection, or that funnygerman/flashcards is deployed, and reload.";
+        banner.classList.add("visible");
+        return null;
+      }
     }
 
     function csvField(value) {
@@ -414,7 +421,13 @@
       return { frontText, frontDetails, backText };
     }
 
-    document.getElementById("mdToCsvBtn").addEventListener("click", () => {
+    document.getElementById("mdToCsvBtn").addEventListener("click", async () => {
+      const deriveKey = await withKeyRule();
+      if (!deriveKey) {
+        document.getElementById("mdToCsvStatus").textContent = "Key rule unavailable — see the notice above.";
+        return;
+      }
+
       const inputLines = document
         .getElementById("mdInput")
         .value.split("\n")
@@ -668,10 +681,16 @@
       previewTable.addRow({ key: "", frontText: "", frontDetails: "", backText: "", backDetails: "", category: "" });
     });
 
-    document.getElementById("fillKeysBtn").addEventListener("click", () => {
+    document.getElementById("fillKeysBtn").addEventListener("click", async () => {
       const statusEl = document.getElementById("previewLoadStatus");
       if (!previewTable || !previewBuilt) {
         statusEl.textContent = "Load or paste a CSV first.";
+        return;
+      }
+
+      const deriveKey = await withKeyRule();
+      if (!deriveKey) {
+        statusEl.textContent = "Key rule unavailable — see the notice above.";
         return;
       }
 
