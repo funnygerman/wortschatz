@@ -388,9 +388,16 @@
     async function withKeyRule() {
       const banner = document.getElementById("keyModuleError");
       try {
-        const { deriveKey } = await keyRule;
+        const { deriveKey, GERMAN_ARTICLES } = await keyRule;
         banner.classList.remove("visible");
-        return deriveKey;
+
+        /* Every deck this repository builds has German on the front, so a
+           derived key drops a leading der/die/das — `das Schaf` files under
+           `schaf-...`, matching the keys already in vocabulary.csv. The player
+           makes this opt-in rather than automatic, since stripping those three
+           words is right for German and silently wrong for any other language,
+           so the choice has to be said here rather than assumed. */
+        return (row) => deriveKey(row, GERMAN_ARTICLES);
       } catch {
         banner.textContent =
           `Could not load the key rule from ${KEY_MODULE_URL} — keys can't be generated right now. ` +
