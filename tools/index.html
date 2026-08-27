@@ -398,6 +398,13 @@
       return out
         .normalize("NFD")
         .replace(/\p{Diacritic}/gu, "")
+        /* Dropped outright rather than turned into a hyphen: "one's" is one
+           word, and hyphenating the apostrophe would split it in two
+           ("one-s"). Every other punctuation mark still becomes a hyphen
+           below — this is only for the mark that sits inside a word rather
+           than between two of them. Both the straight and curly forms, since
+           text pasted from different sources carries either. */
+        .replace(/['’‘"“”]/g, "")
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-+|-+$/g, "");
     }
