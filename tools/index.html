@@ -129,9 +129,10 @@
         are all accepted before the translation). Each line becomes a CSV row. The
         <code>key</code> column is filled from <code>frontText</code> <em>and</em> <code>backText</code>,
         lower-cased and hyphenated, the article dropped from a noun (<code>das Schaf</code> →
-        <code>schaf-…</code>), umlauts written out (<code>fünf</code> → <code>fuenf</code>) and Russian
-        romanized (<code>чем</code> → <code>chem</code>). Both sides, so the two <code>laufen</code>
-        cards no longer collide on one key.
+        <code>schaf-…</code>), a card's own script kept as written (<code>fünf</code> stays
+        <code>fünf</code>, <code>чем</code> stays <code>чем</code>), and only the first translation
+        kept where the back lists several (<code>врач, доктор</code> keys as <code>врач</code> alone).
+        Both sides, so the two <code>laufen</code> cards no longer collide on one key.
       </p>
 
       <div class="field">
@@ -177,9 +178,9 @@
         a whole new version in and apply it back to the table.
       </p>
       <p class="status">
-        <strong>Fill blank keys</strong> writes a key into every row that has none, by the same rule the
-        player uses for a card that omits it. It never touches a key that is already there — that is the
-        point of it. A key belongs to a row from the moment it is written: readers' schedules live in
+        <strong>Fill blank keys</strong> writes a key into every row that has none: the article dropped,
+        a card's own script kept as written, only the first translation kept where the back lists several.
+        It never touches a key that is already there — that is the point of it. A key belongs to a row from the moment it is written: readers' schedules live in
         their own browsers under these keys, so a key that shifts because a translation was reworded
         doesn't correct that card, it abandons it. Fill once, when you add the row, and the key stops
         moving. Duplicates are reported rather than fixed, since which of two identical rows is the real
@@ -363,56 +364,45 @@
     // moving for good; renaming one deliberately is what the wasKey column is
     // for (see renameKey below).
 
-    // Romanized rather than kept as Cyrillic, in the style the existing keys
-    // already use: `чем` is `chem`, `другой` is `drugoy`. That keeps a key
-    // greppable and, more to the point, keeps vocabulary.csv sortable — the
-    // file is kept in key order, so a key is a sort key too.
-    const CYRILLIC = {
-      а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e", ж: "zh", з: "z",
-      и: "i", й: "y", к: "k", л: "l", м: "m", н: "n", о: "o", п: "p", р: "r",
-      с: "s", т: "t", у: "u", ф: "f", х: "h", ц: "c", ч: "ch", ш: "sh",
-      щ: "sch", ъ: "", ы: "i", ь: "", э: "e", ю: "yu", я: "ya",
-    };
-
-    // German the way German spells itself without the mark — `fünf` is `fuenf`,
-    // not `funf`. The article goes because `das Wasser` and `wasser` are the
-    // same word filed twice, and because dropping it is what files `der Arzt`
-    // under A rather than bunching every noun under D.
+    // No transliteration: a card's own script is kept, not romanized. Only
+    // the article goes — `das Wasser` and `wasser` are the same word filed
+    // twice, and dropping it is what files `der Arzt` under A rather than
+    // bunching every noun under D — and the mark that sits inside a word
+    // rather than between two of them (an apostrophe, a quote).
     //
-    // NFC first: `schön` typed on one system and pasted from another can be `ö`
-    // as one code point or `o` plus a separate combining diaeresis — visually
-    // identical, `===` false. Normalizing before the umlaut swap means both
-    // spellings give the same key instead of two keys nothing can tell apart by
-    // eye.
+    // NFC first: `schön` typed on one system and pasted from another can be
+    // `ö` as one code point or `o` plus a separate combining diaeresis —
+    // visually identical, `===` false. Normalizing first means both spellings
+    // give the same key instead of two nothing can tell apart by eye.
+    //
+    // `\p{L}`/`\p{N}` rather than `a-z0-9`, so a letter is a letter in every
+    // script this file uses — Cyrillic included — and nothing outside German
+    // and Russian gets silently dropped the way `[^a-z0-9]` would drop it.
     function slug(text) {
-      const out = String(text ?? "")
+      return String(text ?? "")
         .toLowerCase()
         .normalize("NFC")
         .replace(/^(der|die|das)\s+/, "")
-        .replace(/ä/g, "ae")
-        .replace(/ö/g, "oe")
-        .replace(/ü/g, "ue")
-        .replace(/ß/g, "ss")
-        .replace(/[а-яё]/g, (c) => CYRILLIC[c] ?? "");
-
-      return out
-        .normalize("NFD")
-        .replace(/\p{Diacritic}/gu, "")
-        /* Dropped outright rather than turned into a hyphen: "one's" is one
-           word, and hyphenating the apostrophe would split it in two
-           ("one-s"). Every other punctuation mark still becomes a hyphen
-           below — this is only for the mark that sits inside a word rather
-           than between two of them. Both the straight and curly forms, since
-           text pasted from different sources carries either. */
+        /* Both the straight and curly forms, since text pasted from a phone
+           or a different editor carries either. */
         .replace(/['’‘"“”]/g, "")
-        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/[^\p{L}\p{N}]+/gu, "-")
         .replace(/^-+|-+$/g, "");
+    }
+
+    // Everything after the first comma, semicolon, or other punctuation mark
+    // is a second translation or a clarifying remark, not part of the word —
+    // `врач, доктор` is filed under `vrach`, not `vrach-doktor`, matching
+    // every existing multi-translation row in both CSVs. frontText needs no
+    // such cut: it is never more than one phrase in either list.
+    function firstClause(text) {
+      return String(text ?? "").split(/[,;.!?:()]/)[0].trim();
     }
 
     // Empty rather than a made-up key: a counter or a hash would be unique and
     // meaningless, and two decks naming the same word would disagree about it.
     function deriveKey(row) {
-      return [slug(row.frontText), slug(row.backText)].filter(Boolean).join("-");
+      return [slug(row.frontText), slug(firstClause(row.backText))].filter(Boolean).join("-");
     }
 
     function csvField(value) {
@@ -713,7 +703,7 @@
 
       /* Reported, not resolved: two rows wanting one key is a question about
          the vocabulary, and answering it by suffixing a number would put a key
-         in the CSV that the player would never derive for that card. */
+         in the CSV that this rule would never derive on its own. */
       const seen = new Map();
       for (const data of previewTable.getData()) {
         const key = (data.key ?? "").trim();
