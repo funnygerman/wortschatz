@@ -127,10 +127,12 @@
         Paste already-published lines like <code>🔸 das Schaf / die Schafe - овца</code> (the ✱✱bold✱✱
         markers are optional — plain-text copies work too, and <code>-</code>/<code>–</code>/<code>—</code>
         are all accepted before the translation). Each line becomes a CSV row. The
-        <code>key</code> column is filled from <code>frontText</code>, lower-cased and slugified; for a
-        noun (<code>der</code>/<code>die</code>/<code>das</code> ...) the article is dropped first. Check the
-        generated keys — they don't include the transliterated backText half some existing keys use, so
-        adjust for uniqueness if needed.
+        <code>key</code> column is filled from <code>frontText</code> <em>and</em> <code>backText</code>,
+        by the same rule the player uses when a deck omits the key
+        (<code>v2/src/key.js</code> in <code>funnygerman/flashcards</code>): lower-cased and hyphenated,
+        the article dropped from a noun, umlauts written out (<code>fünf</code> → <code>fuenf</code>) and
+        Cyrillic transliterated (<code>чем</code> → <code>chem</code>). Both sides, so the two
+        <code>laufen</code> cards no longer collide on one key.
       </p>
 
       <div class="field">
@@ -175,11 +177,29 @@
         Every edit updates the raw CSV underneath; switch to "Raw CSV" any time to copy it out or paste
         a whole new version in and apply it back to the table.
       </p>
+      <p class="status">
+        <strong>Fill blank keys</strong> writes a key into every row that has none, by the same rule the
+        player uses for a card that omits it. It never touches a key that is already there — that is the
+        point of it. A key belongs to a row from the moment it is written: readers' schedules live in
+        their own browsers under these keys, so a key that shifts because a translation was reworded
+        doesn't correct that card, it abandons it. Fill once, when you add the row, and the key stops
+        moving. Duplicates are reported rather than fixed, since which of two identical rows is the real
+        one is not something a rule can know.
+      </p>
+      <p class="status">
+        If you <em>do</em> have to change a key that is already in use — a typo baked into it, an old
+        front-only key you want in line with the rest — just edit the cell. The old key is recorded in a
+        <code>wasKey</code> column (added to the CSV only when a rename actually happens, several keys
+        separated by <code>|</code>, newest first). The player reads it and moves that reader's schedule
+        and dictionary entry across on their next visit, so a renamed card keeps the box it earned
+        instead of arriving as a card nobody has ever seen.
+      </p>
 
       <div class="row field">
         <button id="previewLoadRu">Load ru/data/vocabulary.csv</button>
         <button id="previewLoadEn">Load en/data/vocabulary.csv</button>
         <button id="addRowBtn">+ Add row</button>
+        <button class="primary" id="fillKeysBtn">Fill blank keys</button>
         <span class="status" id="previewLoadStatus">No CSV loaded yet.</span>
       </div>
 
@@ -288,7 +308,19 @@
         const card = {};
         for (const key of Object.keys(row)) {
           const value = (row[key] ?? "").trim();
-          if (value !== "") card[key] = value;
+          if (value === "") continue;
+
+          /* One CSV cell, but the player takes one key or a list of them
+             (V2-2.10) -- so `b|a` has to arrive as two keys and not as one key
+             that happens to contain a pipe, which would match nothing and
+             quietly migrate nobody. A single old key stays a plain string. */
+          if (key === "wasKey") {
+            const chain = value.split("|").map((k) => k.trim()).filter(Boolean);
+            if (chain.length > 0) card.wasKey = chain.length === 1 ? chain[0] : chain;
+            continue;
+          }
+
+          card[key] = value;
         }
         return card;
       });
@@ -308,16 +340,57 @@
 
     // --- Markdown -> CSV -------------------------------------------------
 
-    function slugify(s) {
-      return s
+    // --- Keys -----------------------------------------------------------
+    //
+    // The same rule the flashcards player uses: funnygerman/flashcards,
+    // v2/src/key.js. A deck file there may omit `key` entirely and openDeck
+    // derives it from the card's two words, so anything generating a deck has
+    // to derive it the same way or the two disagree about what a card is.
+    //
+    // Both sides, not the front alone, because a front is not unique — `laufen`
+    // is two cards and only the back tells `to run` from `to operate`. The
+    // front-only keys this tool used to emit collided exactly there, which is
+    // what the old "adjust for uniqueness if needed" note was apologising for.
+    //
+    // A key is derived ONCE, when a row is first added, and then belongs to the
+    // row: fillBlankKeys() below never touches a cell that already has one.
+    // That is deliberate and it is the whole migration story. A reader's
+    // schedule and dictionary live in their own browser under these keys, so a
+    // key that moved because someone reworded a translation does not correct
+    // that card, it abandons it — an empty schedule and an orphan nobody
+    // claims. Written into the CSV, the key stops moving for good.
+
+    const CYRILLIC = {
+      а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e", ж: "zh", з: "z",
+      и: "i", й: "y", к: "k", л: "l", м: "m", н: "n", о: "o", п: "p", р: "r",
+      с: "s", т: "t", у: "u", ф: "f", х: "h", ц: "c", ч: "ch", ш: "sh",
+      щ: "sch", ъ: "", ы: "i", ь: "", э: "e", ю: "yu", я: "ya",
+    };
+
+    // German the way German spells itself without the mark — `fünf` is `fuenf`,
+    // not `funf`. Russian in the transliteration the existing keys already use:
+    // `чем` is `chem`, `другой` is `drugoy`.
+    function slug(text) {
+      let out = String(text ?? "")
         .toLowerCase()
-        .replace(/[^\p{L}\p{N}]+/gu, "-")
+        .replace(/^(der|die|das)\s+/, "")
+        .replace(/ä/g, "ae")
+        .replace(/ö/g, "oe")
+        .replace(/ü/g, "ue")
+        .replace(/ß/g, "ss")
+        .replace(/[а-яё]/g, (c) => CYRILLIC[c] ?? "");
+
+      return out
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-+|-+$/g, "");
     }
 
-    function keyFromFrontText(frontText) {
-      const article = frontText.match(/^(der|die|das)\s+(.+)$/i);
-      return slugify(article ? article[2] : frontText);
+    // Empty rather than a made-up key: a counter or a hash would be unique and
+    // meaningless, and two decks naming the same word would disagree about it.
+    function deriveKey(row) {
+      return [slug(row.frontText), slug(row.backText)].filter(Boolean).join("-");
     }
 
     function csvField(value) {
@@ -358,7 +431,7 @@
 
       const header = "key;frontText;frontDetails;backText;backDetails;category";
       const rows = entries.map((e) =>
-        [keyFromFrontText(e.frontText), e.frontText, e.frontDetails, e.backText, "", ""]
+        [deriveKey(e), e.frontText, e.frontDetails, e.backText, "", ""]
           .map(csvField)
           .join(";")
       );
@@ -389,7 +462,23 @@
 
     // --- Preview & edit -------------------------------------------------
 
-    const CSV_FIELDS = ["key", "frontText", "frontDetails", "backText", "backDetails", "category"];
+    const BASE_FIELDS = ["key", "frontText", "frontDetails", "backText", "backDetails", "category"];
+
+    /* Columns the loaded CSV carries beyond the six, kept so a round-trip
+       through this table cannot silently drop one. `wasKey` is the column this
+       exists for -- see renameKey() below -- but anything else survives too,
+       and a vocabulary.csv that never needed one stays six columns wide. */
+    let extraFields = [];
+
+    const csvFields = () => [...BASE_FIELDS, ...extraFields];
+
+    function noteExtraFields(rows) {
+      for (const row of rows) {
+        for (const field of Object.keys(row)) {
+          if (!BASE_FIELDS.includes(field) && !extraFields.includes(field)) extraFields.push(field);
+        }
+      }
+    }
     const CATEGORY_SEED = {
       ru: [
         "существительное", "глагол", "прилагательное", "наречие", "местоимение",
@@ -402,6 +491,8 @@
     };
 
     let previewTable = null;
+    let previewBuilt = false;
+    let pendingData = null;
     let categoryLang = "ru";
 
     function categoryValues() {
@@ -427,6 +518,7 @@
           title: "category", field: "category", editor: "list", minWidth: 160,
           editorParams: { values: categoryValues(), autocomplete: true, freetext: true, listOnEmpty: true, clearable: true },
         },
+        ...extraFields.map((field) => ({ title: field, field, editor: "input", width: 170 })),
       ];
     }
 
@@ -446,7 +538,16 @@
     }
 
     function initPreviewTable(data) {
+      noteExtraFields(data);
       if (previewTable) {
+        /* setColumns/setData both throw if the table has not finished building,
+           which it may not have: applying a CSV from the Raw tab constructs it
+           inside a hidden subpanel. Queue the data and let tableBuilt take it. */
+        if (!previewBuilt) {
+          pendingData = data;
+          return;
+        }
+        previewTable.setColumns(previewColumns());
         previewTable.setData(data);
         refreshCategorySuggestions();
         return;
@@ -457,7 +558,22 @@
         height: "480px",
         columns: previewColumns(),
       });
+      /* Built is the first moment getData() answers, so it is the first moment
+         the raw CSV underneath can be written from it. Without this, applying a
+         CSV while the Raw tab is showing left that textarea holding a bare
+         header until the next edit happened to re-sync it. */
+      previewTable.on("tableBuilt", () => {
+        previewBuilt = true;
+        if (pendingData) {
+          previewTable.setColumns(previewColumns());
+          previewTable.setData(pendingData);
+          pendingData = null;
+        }
+        syncPreviewTableToRaw();
+        refreshCategorySuggestions();
+      });
       previewTable.on("cellEdited", (cell) => {
+        if (cell.getField() === "key") renameKey(cell);
         syncPreviewTableToRaw();
         if (cell.getField() === "category") refreshCategorySuggestions();
       });
@@ -469,12 +585,45 @@
       });
     }
 
+    /* Editing a key that already had a value is a rename, and this is the one
+       moment the old key is still known -- once the cell is overwritten nothing
+       remembers what a reader's browser has the card filed under. So the old
+       key is written into `wasKey`, which the player reads to move that
+       reader's schedule and dictionary entry across on their next visit
+       (v2/src/migrate.js in funnygerman/flashcards). Without it the renamed
+       card reaches them as a card they have never seen: box empty, due today,
+       and the old entry still in their dictionary as a duplicate.
+
+       Newest first, and the previous note is kept rather than replaced, so a
+       card renamed twice still collects a reader who never got the first
+       rename. Filling a key that was blank is not a rename -- there was no
+       entry under "" for anyone to have. */
+    function renameKey(cell) {
+      const from = (cell.getOldValue() ?? "").trim();
+      const to = (cell.getValue() ?? "").trim();
+      if (!from || from === to) return;
+
+      if (!extraFields.includes("wasKey")) {
+        extraFields.push("wasKey");
+        previewTable.setColumns(previewColumns());
+      }
+
+      const previous = (cell.getRow().getData().wasKey ?? "").trim();
+      const chain = [from, ...previous.split("|").map((k) => k.trim()).filter(Boolean)];
+
+      cell.getRow().update({ wasKey: [...new Set(chain)].filter((k) => k !== to).join("|") });
+
+      document.getElementById("previewLoadStatus").textContent =
+        `Renamed ${from} → ${to}. Recorded in wasKey so readers keep their progress.`;
+    }
+
     function syncPreviewTableToRaw() {
-      if (!previewTable) return;
-      const header = CSV_FIELDS.join(";");
+      if (!previewTable || !previewBuilt) return;
+      const fields = csvFields();
+      const header = fields.join(";");
       const rows = previewTable
         .getData()
-        .map((row) => CSV_FIELDS.map((f) => csvField((row[f] ?? "").toString())).join(";"));
+        .map((row) => fields.map((f) => csvField((row[f] ?? "").toString())).join(";"));
       document.getElementById("previewCsv").value = [header, ...rows].join("\n");
     }
 
@@ -517,6 +666,46 @@
     document.getElementById("addRowBtn").addEventListener("click", () => {
       if (!previewTable) initPreviewTable([]);
       previewTable.addRow({ key: "", frontText: "", frontDetails: "", backText: "", backDetails: "", category: "" });
+    });
+
+    document.getElementById("fillKeysBtn").addEventListener("click", () => {
+      const statusEl = document.getElementById("previewLoadStatus");
+      if (!previewTable || !previewBuilt) {
+        statusEl.textContent = "Load or paste a CSV first.";
+        return;
+      }
+
+      let filled = 0;
+      let unkeyable = 0;
+
+      for (const row of previewTable.getRows()) {
+        const data = row.getData();
+        if ((data.key ?? "").trim() !== "") continue; /* pinned — leave it */
+
+        const derived = deriveKey(data);
+        if (!derived) { unkeyable++; continue; }
+
+        row.update({ key: derived });
+        filled++;
+      }
+
+      /* Reported, not resolved: two rows wanting one key is a question about
+         the vocabulary, and answering it by suffixing a number would put a key
+         in the CSV that the player would never derive for that card. */
+      const seen = new Map();
+      for (const data of previewTable.getData()) {
+        const key = (data.key ?? "").trim();
+        if (key) seen.set(key, (seen.get(key) ?? 0) + 1);
+      }
+      const duplicates = [...seen].filter(([, count]) => count > 1).map(([key]) => key);
+
+      statusEl.textContent = [
+        `Filled ${filled} blank key(s).`,
+        unkeyable ? `${unkeyable} row(s) had no text to build one from.` : "",
+        duplicates.length ? `Duplicate keys, decide by hand: ${duplicates.join(", ")}` : "",
+      ].filter(Boolean).join(" ");
+
+      syncPreviewTableToRaw();
     });
     document.getElementById("applyRawBtn").addEventListener("click", () => {
       const text = document.getElementById("previewCsv").value;
