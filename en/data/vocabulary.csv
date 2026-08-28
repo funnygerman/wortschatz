@@ -1,10 +1,12 @@
 key;frontText;frontDetails;backText;backDetails;category
 abenteuer;das Abenteuer;die Abenteuer;adventure;;noun
 antworten-to-answer;antworten;antwortete / geantwortet;to reply, to answer;;verb
+atmen-to-breathe;atmen;atmete / geatmet;to breathe;;noun
 ausstrecken-to-stretch-out;ausstrecken;streckte aus / ausgestreckt;to stretch out, to extend, to reach out;;verb
 behalten-to-keep;behalten;behielt / behalten;to keep, to retain;;verb
 bekanntlich;bekanntlich;;as is well known;;adverb
 bekloppt-crazy;bekloppt;;crazy, nuts;;adjective
+blick-look;der Blick;die Blicke;look, gaze;;noun
 damit-so-that;damit;;so that, in order to;;adverb
 daneben;daneben;;next to it, beside it;;adverb
 durch-through;durch;;through, along;;preposition
@@ -13,6 +15,7 @@ eier-haben-to-have-balls;Eier haben;;"literally ""to have eggs""";"idiomatically
 eigentlich-actually;eigentlich;;actually, in fact;;adverb
 einpacken-to-pack;einpacken;packte ein / eingepackt;"to pack, to wrap up";;verb
 elefant-elephant;der Elefant;die Elefanten;the elephant;;noun
+ende-end;das Ende;die Enden;end;;noun
 erzählen;erzählen;erzählte / erzählt;to tell, to narrate;;verb
 essen-food;das Essen;;food, meal;;noun
 fachgebiet-subject-area;das Fachgebiet;die Fachgebiete;subject area, field of expertise;;noun
@@ -21,9 +24,14 @@ frage-question;die Frage;die Fragen;question;;noun
 frisör-hairdresser;der Frisör;die Frisöre;hairdresser;;noun
 frühstück-breakfast;das Frühstück;die Frühstücke;"breakfast";;noun
 gelingen;gelingen;gelang / gelungen;to succeed, to turn out well;;verb
+greifen-to-grab;greifen;griff / gegriffen;to grab, to reach for;;verb
 haarschneiden-haircut;das Haarschneiden;;haircut;;noun
+helfen-to-help;helfen;half / geholfen;to help;;verb
 henkel-handle;der Henkel;die Henkel;handle;;noun
+hören-to-hear;hören;hörte / gehört;to hear;;verb
 in-die-hände-klatschen-to-clap-ones-hands;in die Hände klatschen;klatschte / geklatscht;to clap one's hands;;expression
+jäger-hunter;der Jäger;die Jäger;hunter;;noun
+kollabieren-to-collapse;kollabieren;kollabierte / kollabiert;to collapse;;verb
 krankenschwester-nurse;die Krankenschwester;die Krankenschwestern;nurse;;noun
 kriegen-to-get;kriegen;kriegte / gekriegt;to get, to receive;;verb
 kurz-short;kurz;;short;;adjective
@@ -35,29 +43,39 @@ mann-man;der Mann;die Männer;man / men;;noun
 masche-mesh;die Masche;die Maschen;mesh, loop;;noun
 mund-mouth;der Mund;die Münder;mouth;;noun
 nackt-naked;nackt;;naked;;adjective
+notarzt-emergency-doctor;der Notarzt;die Notärzte;emergency doctor;;noun
 passant-passerby;der Passant;die Passanten;the passerby;;noun
 plastikdinosaurier;der Plastikdinosaurier;die Plastikdinosaurier;plastic dinosaur;;noun
 rappelvoll-jam-packed;rappelvoll;;"jam-packed, crammed";;adjective
 rausgehen-to-go-out;rausgehen;ging raus / rausgegangen;to go out;;verb
 rufen-to-call;rufen;rief / gerufen;to call, to shout;;verb
+schuss-shot;der Schuss;die Schüsse;shot, gunshot;;noun
+sich-beruhigen-to-calm-down;sich beruhigen;beruhigte / beruhigt;to calm down;;verb
 sich-beschweren-to-complain;sich beschweren;beschwerte / beschwert;to complain;;verb
+sich-vergewissern-to-make-sure;sich vergewissern;vergewisserte / vergewissert;to make sure;;verb
 spaß-fun;der Spaß;;fun, pleasure;;noun
+starr-rigid;starr;;rigid, fixed;;adjective
 sterben-to-die;sterben;starb / gestorben;to die;;noun
+stille-silence;die Stille;;silence;;noun
 straße-street;die Straße;die Straßen;the street;;noun
 tag-day;der Tag;die Tage;day;;noun
 tasse-cup;die Tasse;die Tassen;cup;;noun
 tornetz-goal-net;das Tornetz;die Tornetze;goal net;;noun
+tot-dead;tot;;dead;;adjective
 unbedingt-absolutely;unbedingt;;absolutely, definitely;;adverb
 ureinwohner-native-inhabitant;der Ureinwohner;die Ureinwohner;native inhabitant, indigenous person;;noun
 verjagen-to-chase-away;verjagen;verjagte / verjagt;to chase away;;verb
 verrückt-insane;verrückt;;insane, crazy;;adjective
 verstehen-to-understand;verstehen;verstand / verstanden;to understand;;verb
 vortrag-lecture;der Vortrag;die Vorträge;lecture, talk;;noun
+wald-forest;der Wald;die Wälder;forest;;noun
 warum-why;warum;;why;;adverb
 welt-world;die Welt;;the world;;noun
 wirken-to-work;wirken;wirkte / gewirkt;to work, to have an effect;;verb
+wirklich-really;wirklich;;really, truly;;adverb
 wüste;die Wüste;die Wüsten;desert;;noun
 zeigen-to-show;zeigen;zeigte / gezeigt;to show;;verb
 zimmer-room;das Zimmer;die Zimmer;room;;noun
+zuerst-first;zuerst;;first, at first;;adverb
 übertreiben-to-exaggerate;übertreiben;übertrieb / übertrieben;to exaggerate, to overdo;;verb
 übrig-lassen-to-leave-behind;übrig lassen;ließ übrig / übrig gelassen;to leave behind;;verb
