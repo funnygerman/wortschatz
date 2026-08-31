@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Учи слова из "Коротко о немецком"</title>
+  <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+  <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+  <p class="fc-credit">Сделано с ♥ вместе с Claude — для <a href="https://t.me/korotko_de" target="_blank"
+      rel="noopener">korotko_de</a></p>
+
+  <script type="module">
+    import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+    const cards = [
+      {
+        "key": "floh-bloha",
+        "frontText": "der Floh",
+        "frontDetails": "die Flöhe",
+        "backText": "блоха",
+        "category": "существительное"
+      },
+      {
+        "key": "geschäft-magazin",
+        "frontText": "das Geschäft",
+        "frontDetails": "die Geschäfte",
+        "backText": "магазин, бизнес",
+        "category": "существительное"
+      },
+      {
+        "key": "saftladen-sharashkina-kontora",
+        "frontText": "der Saftladen",
+        "backText": "шарашкина контора",
+        "category": "существительное"
+      },
+      {
+        "key": "saft-sok",
+        "frontText": "der Saft",
+        "frontDetails": "die Säfte",
+        "backText": "сок",
+        "category": "существительное"
+      },
+      {
+        "key": "laden-magazin",
+        "frontText": "der Laden",
+        "frontDetails": "die Läden",
+        "backText": "магазин",
+        "category": "существительное"
+      },
+      {
+        "key": "schwarzmarkt-cherniy-rinok",
+        "frontText": "der Schwarzmarkt",
+        "backText": "чёрный рынок",
+        "category": "существительное"
+      },
+      {
+        "key": "schwarz-cherniy",
+        "frontText": "schwarz",
+        "backText": "чёрный",
+        "category": "прилагательное"
+      },
+      {
+        "key": "markt-rinok",
+        "frontText": "der Markt",
+        "frontDetails": "die Märkte",
+        "backText": "рынок",
+        "category": "существительное"
+      },
+      {
+        "key": "flohmarkt-bloshiniy-rinok",
+        "frontText": "der Flohmarkt",
+        "frontDetails": "die Flohmärkte",
+        "backText": "блошиный рынок",
+        "category": "существительное"
+      }
+    ];
+
+    openDeck(cards, { lang: "ru", dictionary: "de-ru" });
+  </script>
+</body>
+
+</html>
