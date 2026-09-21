@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Учи слова из FunnyGerman</title>
+  <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+  <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+  <p class="fc-credit">Сделано с ♥ вместе с Claude — для <a href="https://t.me/FunnyGerman" target="_blank"
+      rel="noopener">FunnyGerman</a></p>
+
+  <script type="module">
+    import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+    const cards = [
+      {
+        "key": "optimist-optimist",
+        "frontText": "der Optimist",
+        "frontDetails": "die Optimisten",
+        "backText": "оптимист",
+        "category": "существительное"
+      },
+      {
+        "key": "denken-dumat",
+        "frontText": "denken",
+        "frontDetails": "dachte / gedacht",
+        "backText": "думать, подумать",
+        "category": "глагол"
+      },
+      {
+        "key": "hier-zdes",
+        "frontText": "hier",
+        "backText": "здесь, тут",
+        "category": "наречие"
+      },
+      {
+        "key": "pessimist-pessimist",
+        "frontText": "der Pessimist",
+        "frontDetails": "die Pessimisten",
+        "backText": "пессимист",
+        "category": "существительное"
+      },
+      {
+        "key": "suchen-iskat",
+        "frontText": "suchen",
+        "frontDetails": "suchte / gesucht",
+        "backText": "искать",
+        "category": "глагол"
+      },
+      {
+        "key": "socke-nosok",
+        "frontText": "die Socke",
+        "frontDetails": "die Socken",
+        "backText": "носок",
+        "category": "существительное"
+      },
+      {
+        "key": "fehlen-ne-hvatat",
+        "frontText": "fehlen",
+        "frontDetails": "fehlte / gefehlt",
+        "backText": "не хватать, недоставать",
+        "category": "глагол"
+      }
+    ];
+
+    openDeck(cards, { lang: "ru", dictionary: "de-ru" });
+  </script>
+</body>
+
+</html>
