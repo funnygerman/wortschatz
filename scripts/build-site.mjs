@@ -73,11 +73,11 @@ async function walk(dir) {
   return files;
 }
 
-// "ru/2026/korotko_11_08.html" → { year, month, day, channel }
+// "ru/2026/korotko_08_11.html" → { year, month, day, channel }
 function describe(file) {
   const name = path.basename(file, ".html");
   const yearDir = file.split("/").find((seg) => /^\d{4}$/.test(seg));
-  const [prefix, dd, mm, yy] = name.split("_");
+  const [prefix, mm, dd, yy] = name.split("_");
   const day = Number(dd);
   const month = Number(mm);
   return {
