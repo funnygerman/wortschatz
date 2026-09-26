@@ -10,16 +10,18 @@ Autsch-oy;Autsch;;ой, ай;;междометие
 beste-luchshee;das Beste;от gut;лучшее;;прилагательное
 bitte-pozhaluysta;bitte;;пожалуйста ;;частица
 bleiben-ostavatsya;bleiben;blieb / geblieben;оставаться;;глагол
+bogen-smichok;der Bogen;die Bögen или die Bogen;смычок;;существительное
 couch-divan;die Couch;die Couch(e)s;диван, кушетка;;существительное
 dann-togda;dann;;тогда;;наречие
 das-schlechte-gewissen-ugrizeniya-sovesti;das schlechte Gewissen;;угрызения совести, нечистая совесть;;выражение
 defizit-deficit;das Defizit;die Defizite;;дефицит;существительное
-denken-dumat;denken;dachte / gedacht;думать;;глагол
+denken-dumat;denken;dachte / gedacht;думать, подумать;;глагол
 deswegen-poetomu;deswegen;;поэтому;;наречие
 einsehen-ponimat;einsehen;sah ein / eingesehen;понимать, сознавать;;глагол
 eltern-roditeli;die Eltern;;родители;;существительное
 endlich-nakonec;endlich;;наконец;;наречие
 entspannt-spokoyniy;entspannt;;спокойный, расслабленный;;причастие
+fehlen-ne-hvatat;fehlen;fehlte / gefehlt;не хватать, недоставать;;глагол
 festhalten-uderzhivat;festhalten;hielt fest / festgehalten;удерживать, держать;;глагол
 filter-filter;der Filter;die Filter;фильтр;;существительное
 floh-bloha;der Floh;die Flöhe;блоха;;существительное
@@ -37,6 +39,7 @@ glücklich-schastliviy;glücklich;;счастливый;;прилагатель�
 gut-horshiy;gut;;хороший;;прилагательное
 halb-polovinniy;halb;;половинный, частичный, наполовину;;прилагательное
 heute-segodnya;heute;;сегодня;;наречие
+hier-zdes;hier;;здесь, тут;;наречие
 hyperaktivität-giperaktivnost;die Hyperaktivität;;;гиперактивность;существительное
 jemanden-gelegen-kommen-proishodit-vovremya;jemanden gelegen kommen;;случаться вовремя, кстати;;выражение
 jemanden-zuliebe-radi-kogo-to;jemanden zuliebe;;ради кого-то;;выражение
@@ -58,6 +61,8 @@ mensch-chelovek;der Mensch;die Menschen;человек;;существитель
 nichts-nichego;nichts;;ничего;;местоимение
 nun-vot;nun;;вот;;наречие
 ohne-bez;ohne;;без;;предлог
+optimist-optimist;der Optimist;die Optimisten;оптимист;;существительное
+pessimist-pessimist;der Pessimist;die Pessimisten;пессимист;;существительное
 produktiv-produktivniy;produktiv;;продуктивный;;прилагательное
 reinlassen-vpuskat;reinlassen;ließ rein / reingelassen;впускать;;глагол
 saft-sok;der Saft;die Säfte;сок;;существительное
@@ -73,8 +78,14 @@ sehen-videt;sehen;sah / gesehen;видеть;;глагол
 sehr-ochen;sehr;;очень;;наречие
 situation-situaciya;die Situation;die Situationen;ситуация;;существительное
 sitzen-sidet;sitzen;saß / gesessen;сидеть;;глагол
+socke-nosok;die Socke;die Socken;носок;;существительное
 sondern-a;sondern;;а, но;;союз
+streichen-vodit;streichen;strich / gestrichen;водить (смычком);;глагол
+streichinstrument-cmichkoviy-instrument;das Streichinstrument;die Streichinstrumente;cмычковый инструмент;;существительное
+strich-shtrih;der Strich;die Striche;штрих, чёрточка;;существительное
+stöckchen-palochka;das Stöckchen;die Stöckchen;палочка;;существительное
 störung-rasstroystvo;die Störung;die Störungen;;расстройство;существительное
+suchen-iskat;suchen;suchte / gesucht;искать;;глагол
 tag-den;der Tag;die Tage;день;;существительное
 tee-chay;der Tee;;чай;;существительное
 verblüfft-sbitiy-s-tolku;verblüfft;;сбитый с толку, ошеломлённый;;причастие
@@ -87,11 +98,3 @@ weiss-beliy;weiß;;белый;;прилагательное
 wieder-snova;wieder;;снова, опять;;наречие
 wird-auch-langsam-zeit-samoe-vremya;wird auch langsam Zeit;;самое время;;выражение
 wohl-uyutno;wohl;;уютно, хорошо;;наречие
-key;frontText;frontDetails;backText;backDetails;category
-optimist-optimist;der Optimist;die Optimisten;оптимист;;существительное
-denken-dumat;denken;dachte / gedacht;думать, подумать;;глагол
-hier-zdes;hier;;здесь, тут;;наречие
-pessimist-pessimist;der Pessimist;die Pessimisten;пессимист;;существительное
-suchen-iskat;suchen;suchte / gesucht;искать;;глагол
-socke-nosok;die Socke;die Socken;носок;;существительное
-fehlen-ne-hvatat;fehlen;fehlte / gefehlt;не хватать, недоставать;;глагол
