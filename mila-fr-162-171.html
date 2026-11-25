@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Учи слова из FunnyGerman</title>
+  <link rel="stylesheet" href="https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.css" />
+</head>
+
+<body>
+  <!-- Optional, per file (see flashcards.css's .fc-credit) — not drawn or
+         known about by openDeck()/mount(). -->
+    <p class="fc-credit">Made with ♥ by Claude — for <a href="https://t.me/EnglishFunnyGerman" target="_blank"
+            rel="noopener">FunnyGerman</a></p>
+
+  <script type="module">
+    import { openDeck } from "https://funnygerman.github.io/flashcards/v2/dist/flashcards.min.js";
+
+    const cards = [
+      // --- Seite 162 ---
+      {
+        "frontText": "Bienvenue !",
+        "frontDetails": "[bjɛv(ə)ny]",
+        "backText": "Willkommen!"
+      },
+      {
+        "frontText": "Bonjour !",
+        "frontDetails": "[bɔ̃ʒuʁ]",
+        "backText": "Guten Tag! / Grüß Gott!"
+      },
+      {
+        "frontText": "Salut !",
+        "frontDetails": "[saly]",
+        "backText": "Hallo! / Grüß dich! / Servus!"
+      },
+      {
+        "frontText": "Ça va ?",
+        "frontDetails": "[sava]",
+        "backText": "Wie geht's?"
+      },
+      {
+        "frontText": "oui",
+        "frontDetails": "[wi]",
+        "backText": "ja"
+      },
+      {
+        "frontText": "merci",
+        "frontDetails": "[mɛʁsi]",
+        "backText": "danke"
+      },
+      {
+        "frontText": "Salut ! (fam.)",
+        "frontDetails": "[saly]",
+        "backText": "Tschüss! / Servus!"
+      },
+      {
+        "frontText": "A plus ! (fam.)",
+        "frontDetails": "[aplys]",
+        "backText": "Bis später!"
+      },
+      {
+        "frontText": "bien (adv.)",
+        "frontDetails": "[bjɛ̃]",
+        "backText": "gut (Adv.)"
+      },
+      {
+        "frontText": "Au revoir !",
+        "frontDetails": "[oʁ(ə)vwaʁ]",
+        "backText": "Auf Wiedersehen!"
+      },
+      {
+        "frontText": "Moustique",
+        "frontDetails": "[mustik]",
+        "backText": "Name eines Hundes"
+      },
+
+      // --- Seite 163 ---
+      {
+        "frontText": "un ami / une amie",
+        "frontDetails": "[ɛnami / ynami]",
+        "backText": "ein Freund / eine Freundin"
+      },
+      {
+        "frontText": "Bonjour, les amis !",
+        "frontDetails": "[bɔ̃ʒuʁ lezami]",
+        "backText": "Guten Tag, Freunde!"
+      },
+      {
+        "frontText": "je m’appelle",
+        "frontDetails": "[zəmapɛl]",
+        "backText": "ich heiße"
+      },
+      {
+        "frontText": "et",
+        "frontDetails": "[e]",
+        "backText": "und"
+      },
+      {
+        "frontText": "toi",
+        "frontDetails": "[twa]",
+        "backText": "du (betont)"
+      },
+      {
+        "frontText": "moi",
+        "frontDetails": "[mwa]",
+        "backText": "ich (betont)"
+      },
+      {
+        "frontText": "Paris",
+        "frontDetails": "[paʁi]",
+        "backText": "Paris (Hauptstadt Frankreichs)"
+      },
+      {
+        "frontText": "Malabar",
+        "frontDetails": "[malabaʁ]",
+        "backText": "Name eines Hundes"
+      },
+      {
+        "frontText": "Viens !",
+        "frontDetails": "[vjɛ̃]",
+        "backText": "Komm! (Aufforderung)"
+      },
+      {
+        "frontText": "papa",
+        "frontDetails": "[papa]",
+        "backText": "Papa"
+      },
+      {
+        "frontText": "vite",
+        "frontDetails": "[vit] (adv.)",
+        "backText": "schnell (Adv.)"
+      },
+      {
+        "frontText": "Miaou !",
+        "frontDetails": "[mjau]",
+        "backText": "Miau!"
+      },
+      {
+        "frontText": "Ouah, ouah !",
+        "frontDetails": "[wawa]",
+        "backText": "Wau, wau!"
+      },
+
+      // --- Seite 164 ---
+      {
+        "frontText": "la S.P.A.",
+        "frontDetails": "[ɛspea] (la Société Protectrice des Animaux)",
+        "backText": "die S.P.A. (französische Tierschutzgesellschaft)"
+      },
+      {
+        "frontText": "Qui est-ce ?",
+        "frontDetails": "[kies]",
+        "backText": "Wer ist das?"
+      },
+      {
+        "frontText": "Attention !",
+        "frontDetails": "[atɑ̃sjɔ̃]",
+        "backText": "Achtung!, Vorsicht!"
+      },
+      {
+        "frontText": "non",
+        "frontDetails": "[nɔ̃]",
+        "backText": "nein"
+      },
+      {
+        "frontText": "Pardon.",
+        "frontDetails": "[paʁdɔ̃]",
+        "backText": "Entschuldigung."
+      },
+      {
+        "frontText": "comment ?",
+        "frontDetails": "[kɔmɑ̃]",
+        "backText": "wie? (Fragewort)"
+      },
+      {
+        "frontText": "Tu t’appelles comment ?",
+        "frontDetails": "[tytapɛlkɔmɑ̃]",
+        "backText": "Wie heißt du?"
+      },
+      {
+        "frontText": "c’est",
+        "frontDetails": "[sɛ]",
+        "backText": "das ist"
+      },
+      {
+        "frontText": "je suis",
+        "frontDetails": "[ʒəsɥi]",
+        "backText": "ich bin"
+      },
+      {
+        "frontText": "voilà",
+        "frontDetails": "[vwala]",
+        "backText": "da ist, da sind"
+      },
+      {
+        "frontText": "ici",
+        "frontDetails": "[isi]",
+        "backText": "hier, hierher"
+      },
+      {
+        "frontText": "un chat",
+        "frontDetails": "[ɛ̃ʃa]",
+        "backText": "eine Katze"
+      },
+      {
+        "frontText": "un chien",
+        "frontDetails": "[ɛ̃ʃjɛ̃]",
+        "backText": "ein Hund"
+      },
+      {
+        "frontText": "mais",
+        "frontDetails": "[mɛ]",
+        "backText": "aber"
+      },
+      {
+        "frontText": "tu es",
+        "frontDetails": "[tyɛ]",
+        "backText": "du bist"
+      },
+      {
+        "frontText": "de / d’",
+        "frontDetails": "[də]",
+        "backText": "aus; von"
+      },
+      {
+        "frontText": "aussi",
+        "frontDetails": "[osi]",
+        "backText": "auch"
+      },
+      {
+        "frontText": "super (inv.)",
+        "frontDetails": "[sypɛʁ]",
+        "backText": "super, toll"
+      },
+      {
+        "frontText": "un garçon",
+        "frontDetails": "[ɛ̃ɡaʁsɔ̃]",
+        "backText": "ein Junge, ein Bub"
+      },
+      {
+        "frontText": "une fille",
+        "frontDetails": "[ynfij]",
+        "backText": "ein Mädchen, eine Tochter"
+      },
+      {
+        "frontText": "il est",
+        "frontDetails": "[ile]",
+        "backText": "er ist"
+      },
+      {
+        "frontText": "elle est",
+        "frontDetails": "[ɛle]",
+        "backText": "sie ist"
+      },
+      {
+        "frontText": "un animal",
+        "frontDetails": "[ɛnimal]",
+        "backText": "ein Tier"
+      },
+
+      // --- Seite 165 ---
+      {
+        "frontText": "Ça ne va pas.",
+        "frontDetails": "[sanəvapa]",
+        "backText": "Das geht nicht."
+      },
+      {
+        "frontText": "une chanson",
+        "frontDetails": "[ynʃɑ̃sɔ̃]",
+        "backText": "ein Lied"
+      },
+      {
+        "frontText": "fantastique",
+        "frontDetails": "[fãtastik]",
+        "backText": "fantastisch, toll"
+      },
+      {
+        "frontText": "bizarre",
+        "frontDetails": "[bizaʁ]",
+        "backText": "komisch, merkwürdig"
+      },
+      {
+        "frontText": "un copain / une copine (fam.)",
+        "frontDetails": "[ɛ̃kɔpɛ̃ / ynkɔpin]",
+        "backText": "ein Freund / eine Freundin"
+      },
+      {
+        "frontText": "une dame",
+        "frontDetails": "[yndam]",
+        "backText": "eine Dame, eine Frau"
+      },
+      {
+        "frontText": "un monsieur",
+        "frontDetails": "[ɛ̃møsjø]",
+        "backText": "ein Herr, ein Mann"
+      },
+      {
+        "frontText": "Toulouse",
+        "frontDetails": "[tuluz]",
+        "backText": "Toulouse"
+      },
+      {
+        "frontText": "Strasbourg",
+        "frontDetails": "[stʁasbuʁ]",
+        "backText": "Straßburg"
+      },
+      {
+        "frontText": "Brest",
+        "frontDetails": "[bʁɛst]",
+        "backText": "Brest"
+      },
+      {
+        "frontText": "Nice",
+        "frontDetails": "[nis]",
+        "backText": "Nizza"
+      },
+      {
+        "frontText": "madame ...",
+        "frontDetails": "[madam]",
+        "backText": "Frau ..."
+      },
+      {
+        "frontText": "mademoiselle ...",
+        "frontDetails": "[madmwazɛl]",
+        "backText": "Fräulein ..."
+      },
+      {
+        "frontText": "Bof !",
+        "frontDetails": "[bɔf]",
+        "backText": "Na ja. (ugs.); Ach. (ugs.)"
+      },
+      {
+        "frontText": "zéro",
+        "frontDetails": "[zeʁo]",
+        "backText": "0"
+      },
+      {
+        "frontText": "un",
+        "frontDetails": "[ɛ̃]",
+        "backText": "1"
+      },
+      {
+        "frontText": "deux",
+        "frontDetails": "[dø]",
+        "backText": "2"
+      },
+      {
+        "frontText": "trois",
+        "frontDetails": "[tʁwa]",
+        "backText": "3"
+      },
+      {
+        "frontText": "quatre",
+        "frontDetails": "[katʁə]",
+        "backText": "4"
+      },
+      {
+        "frontText": "cinq",
+        "frontDetails": "[sɛ̃k]",
+        "backText": "5"
+      },
+      {
+        "frontText": "six",
+        "frontDetails": "[sis]",
+        "backText": "6"
+      },
+      {
+        "frontText": "sept",
+        "frontDetails": "[sɛt]",
+        "backText": "7"
+      },
+      {
+        "frontText": "huit",
+        "frontDetails": "[ɥit]",
+        "backText": "8"
+      },
+      {
+        "frontText": "neuf",
+        "frontDetails": "[nœf]",
+        "backText": "9"
+      },
+      {
+        "frontText": "dix",
+        "frontDetails": "[dis]",
+        "backText": "10"
+      },
+      {
+        "frontText": "onze",
+        "frontDetails": "[ɔ̃zə]",
+        "backText": "11"
+      },
+      {
+        "frontText": "douze",
+        "frontDetails": "[duzə]",
+        "backText": "12"
+      },
+
+      // --- Seite 166 ---
+      {
+        "frontText": "un hamster",
+        "frontDetails": "[ɛ̃amstɛʁ]",
+        "backText": "Hamster"
+      },
+      {
+        "frontText": "une tortue",
+        "frontDetails": "[yntɔʁty]",
+        "backText": "Schildkröte"
+      },
+      {
+        "frontText": "une perruche",
+        "frontDetails": "[ynpɛʁyʃ]",
+        "backText": "Wellensittich"
+      },
+      {
+        "frontText": "un serpent",
+        "frontDetails": "[ɛ̃sɛʁpɑ̃]",
+        "backText": "Schlange"
+      },
+      {
+        "frontText": "un rat",
+        "frontDetails": "[ɛ̃ʁa]",
+        "backText": "Ratte"
+      },
+      {
+        "frontText": "un perroquet",
+        "frontDetails": "[ɛ̃pɛʁɔkɛ]",
+        "backText": "Papagei"
+      },
+      {
+        "frontText": "un canari",
+        "frontDetails": "[ɛ̃kanavi] / [ɛ̃kanari]",
+        "backText": "Kanarienvogel"
+      },
+      {
+        "frontText": "un cochon",
+        "frontDetails": "[ɛ̃kɔʃɔ̃]",
+        "backText": "Schwein"
+      },
+
+      // --- Seite 167 ---
+      {
+        "frontText": "un magasin",
+        "frontDetails": "[ɛ̃maɡazɛ̃]",
+        "backText": "ein Geschäft, ein Laden"
+      },
+      {
+        "frontText": "un journal",
+        "frontDetails": "[ɛ̃ʒuʁnal]",
+        "backText": "eine Zeitung"
+      },
+      {
+        "frontText": "une BD",
+        "frontDetails": "[ynbe-de]",
+        "backText": "ein Comic"
+      },
+      {
+        "frontText": "une affiche",
+        "frontDetails": "[ynafiʃ]",
+        "backText": "ein Plakat, ein Poster"
+      },
+      {
+        "frontText": "Qu’est-ce que c’est ?",
+        "frontDetails": "[kɛskəsɛ]",
+        "backText": "Was ist das?"
+      },
+      {
+        "frontText": "à (Paris)",
+        "frontDetails": "[a]",
+        "backText": "in, nach (Paris)"
+      },
+      {
+        "frontText": "une maison",
+        "frontDetails": "[ynmɛzɔ̃]",
+        "backText": "ein Haus"
+      },
+      {
+        "frontText": "une maison de la presse",
+        "frontDetails": "[ynmɛzɔ̃dəlapʁɛs]",
+        "backText": "ein Zeitschriften- und Schreibwarengeschäft"
+      },
+      {
+        "frontText": "Que fait Léo ?",
+        "frontDetails": "[kəfɛleo]",
+        "backText": "Was macht Léo?"
+      },
+      {
+        "frontText": "regarder qc",
+        "frontDetails": "[ʁəɡaʁde]",
+        "backText": "etwas ansehen, etwas betrachten"
+      },
+      {
+        "frontText": "parler",
+        "frontDetails": "[paʁle]",
+        "backText": "sprechen"
+      },
+      {
+        "frontText": "avec",
+        "frontDetails": "[avɛk]",
+        "backText": "mit"
+      },
+      {
+        "frontText": "arriver",
+        "frontDetails": "[aʁive]",
+        "backText": "kommen; ankommen"
+      },
+      {
+        "frontText": "chercher qn / qc",
+        "frontDetails": "[ʃɛʁʃe]",
+        "backText": "jemandem / etwas suchen"
+      },
+      {
+        "frontText": "français",
+        "frontDetails": "[fʁɑ̃sɛ]",
+        "backText": "französisch"
+      },
+
+      // --- Seite 168 ---
+      {
+        "frontText": "en français",
+        "frontDetails": "[ɑ̃fʁɑ̃sɛ]",
+        "backText": "auf Französisch"
+      },
+      {
+        "frontText": "un sac à dos",
+        "frontDetails": "[ɛ̃sakado]",
+        "backText": "ein Rucksack"
+      },
+      {
+        "frontText": "un livre",
+        "frontDetails": "[ɛ̃livʁə]",
+        "backText": "ein Buch"
+      },
+      {
+        "frontText": "un crayon",
+        "frontDetails": "[ɛ̃kʁɛjɔ̃]",
+        "backText": "ein Bleistift"
+      },
+      {
+        "frontText": "un cahier",
+        "frontDetails": "[ɛ̃kaJe]",
+        "backText": "ein Heft"
+      },
+      {
+        "frontText": "un stylo",
+        "frontDetails": "[ɛ̃stilo]",
+        "backText": "ein Füller, ein Kuli"
+      },
+      {
+        "frontText": "une gomme",
+        "frontDetails": "[yngɔm]",
+        "backText": "ein Radiergummi"
+      },
+      {
+        "frontText": "un truc (fam.)",
+        "frontDetails": "[ɛ̃tʁyk]",
+        "backText": "ein Ding, eine Sache"
+      },
+      {
+        "frontText": "écouter qn / qc",
+        "frontDetails": "[ekute]",
+        "backText": "jemandem zuhören, etwas anhören"
+      },
+      {
+        "frontText": "trouver qn / qc",
+        "frontDetails": "[tʁuve]",
+        "backText": "jemanden / etwas finden"
+      },
+      {
+        "frontText": "porter qc",
+        "frontDetails": "[pɔʁte]",
+        "backText": "etwas tragen"
+      },
+      {
+        "frontText": "travailler",
+        "frontDetails": "[tʁavaje]",
+        "backText": "arbeiten"
+      },
+      {
+        "frontText": "dans",
+        "frontDetails": "[dɑ̃]",
+        "backText": "in"
+      },
+      {
+        "frontText": "une rue",
+        "frontDetails": "[ynʁy]",
+        "backText": "eine Straße"
+      },
+      {
+        "frontText": "dans la rue",
+        "frontDetails": "[dɑ̃laʁy]",
+        "backText": "auf der Straße"
+      },
+      {
+        "frontText": "entrer",
+        "frontDetails": "[ɑ̃tʁe]",
+        "backText": "eintreten, hereinkommen"
+      },
+      {
+        "frontText": "euh ...",
+        "frontDetails": "[ø]",
+        "backText": "äh ..."
+      },
+      {
+        "frontText": "là",
+        "frontDetails": "[la]",
+        "backText": "da, dort"
+      },
+      {
+        "frontText": "Chut !",
+        "frontDetails": "[ʃyt]",
+        "backText": "Pst!"
+      },
+      {
+        "frontText": "pour",
+        "frontDetails": "[puʁ]",
+        "backText": "für"
+      },
+      {
+        "frontText": "une école",
+        "frontDetails": "[ynekɔl]",
+        "backText": "eine Schule"
+      },
+      {
+        "frontText": "en vacances",
+        "frontDetails": "[ɑ̃vakɑ̃s]",
+        "backText": "in den Ferien"
+      },
+
+      // --- Seite 169 ---
+      {
+        "frontText": "Tiens !",
+        "frontDetails": "[tjɛ̃]",
+        "backText": "Sieh mal! / Schau mal!"
+      },
+      {
+        "frontText": "une grand-mère",
+        "frontDetails": "[yngʁɑ̃mɛʁ]",
+        "backText": "eine Großmutter"
+      },
+      {
+        "frontText": "Latière",
+        "frontDetails": "[latjɛʁ]",
+        "backText": "Familienname"
+      },
+      {
+        "frontText": "il dit / elle dit",
+        "frontDetails": "[ildi / ɛldi]",
+        "backText": "er sagt / sie sagt"
+      },
+      {
+        "frontText": "un carton",
+        "frontDetails": "[ɛ̃kaʁtɔ̃]",
+        "backText": "ein Karton"
+      },
+      {
+        "frontText": "Malou",
+        "frontDetails": "[malu]",
+        "backText": "Name einer Katze"
+      },
+      {
+        "frontText": "Zut ! (fam.)",
+        "frontDetails": "[zyt]",
+        "backText": "Mist!, Verdammt!"
+      },
+      {
+        "frontText": "une catastrophe",
+        "frontDetails": "[ynkatastʁɔf]",
+        "backText": "eine Katastrophe"
+      },
+      {
+        "frontText": "un cartable",
+        "frontDetails": "[ɛ̃kaʁtablə]",
+        "backText": "Schulranzen"
+      },
+      {
+        "frontText": "un classeur",
+        "frontDetails": "[ɛ̃klasœʁ]",
+        "backText": "Ordner"
+      },
+      {
+        "frontText": "être",
+        "frontDetails": "[ɛtʁə]",
+        "backText": "sein"
+      },
+      {
+        "frontText": "devant",
+        "frontDetails": "[dœvɑ̃]",
+        "backText": "vor (örtlich)"
+      },
+
+      // --- Seite 170 ---
+      {
+        "frontText": "habiter",
+        "frontDetails": "[abite]",
+        "backText": "wohnen"
+      },
+      {
+        "frontText": "rue Nollet",
+        "frontDetails": "[ʁynɔlɛ]",
+        "backText": "Name einer Straße in Paris"
+      },
+      {
+        "frontText": "où",
+        "frontDetails": "[u]",
+        "backText": "wo; wohin"
+      },
+      {
+        "frontText": "rue Truffaut",
+        "frontDetails": "[ʁytʁyfo]",
+        "backText": "Name einer Straße in Paris"
+      },
+      {
+        "frontText": "un t-shirt",
+        "frontDetails": "[ɛ̃tiʃœʁt]",
+        "backText": "ein T-Shirt"
+      },
+      {
+        "frontText": "aimer qn / qc",
+        "frontDetails": "[eme]",
+        "backText": "jemanden / etwas lieben, jemandem / etwas mögen"
+      },
+      {
+        "frontText": "le rugby",
+        "frontDetails": "[ləʁyɡbi]",
+        "backText": "das Rugby (Ballspiel)"
+      },
+      {
+        "frontText": "le judo",
+        "frontDetails": "[ləʒudo]",
+        "backText": "das Judo"
+      },
+      {
+        "frontText": "Qu’est-ce que ... ?",
+        "frontDetails": "[kɛskə]",
+        "backText": "Was ... ?"
+      },
+      {
+        "frontText": "le sport",
+        "frontDetails": "[ləspɔʁ]",
+        "backText": "der Sport"
+      },
+      {
+        "frontText": "la musique",
+        "frontDetails": "[lamyzik]",
+        "backText": "die Musik"
+      },
+      {
+        "frontText": "un frère",
+        "frontDetails": "[ɛ̃fʁɛʁə]",
+        "backText": "ein Bruder"
+      },
+      {
+        "frontText": "une sœur",
+        "frontDetails": "[ynsœʁ]",
+        "backText": "eine Schwester"
+      },
+      {
+        "frontText": "sympa",
+        "frontDetails": "[sɛ̃pa]",
+        "backText": "nett"
+      },
+      {
+        "frontText": "détester qn / qc",
+        "frontDetails": "[detɛste]",
+        "backText": "jemanden / etwas verabscheuen"
+      },
+      {
+        "frontText": "ça",
+        "frontDetails": "[sa]",
+        "backText": "das"
+      },
+      {
+        "frontText": "d’accord",
+        "frontDetails": "[dakaʁ]",
+        "backText": "einverstanden, o.k."
+      },
+      {
+        "frontText": "alors",
+        "frontDetails": "[alɔʁ]",
+        "backText": "nun, jetzt, dann"
+      },
+      {
+        "frontText": "ouf",
+        "frontDetails": "[uf]",
+        "backText": "Uff!"
+      },
+      {
+        "frontText": "le rock",
+        "frontDetails": "[ləʁɔk]",
+        "backText": "Rock, die Rockmusik"
+      },
+      {
+        "frontText": "le foot(ball)",
+        "frontDetails": "[ləfutbal]",
+        "backText": "der Fußball (Sportart)"
+      },
+      {
+        "frontText": "un vélo",
+        "frontDetails": "[ɛ̃velo]",
+        "backText": "ein Fahrrad"
+      },
+      {
+        "frontText": "la techno",
+        "frontDetails": "[latɛkno]",
+        "backText": "Techno (Musikstil)"
+      },
+      {
+        "frontText": "le rap",
+        "frontDetails": "[ləʁap]",
+        "backText": "Rap (Musikstil)"
+      },
+      {
+        "frontText": "la gymnastique",
+        "frontDetails": "[laʒimnastik]",
+        "backText": "das Turnen, die Gymnastik"
+      },
+      {
+        "frontText": "classique",
+        "frontDetails": "[klasik]",
+        "backText": "klassisch"
+      },
+
+      // --- Seite 171 ---
+      {
+        "frontText": "la natation",
+        "frontDetails": "[lanatasjɔ̃]",
+        "backText": "Schwimmen"
+      },
+      {
+        "frontText": "le cinéma",
+        "frontDetails": "[ləsinema]",
+        "backText": "Kino"
+      },
+      {
+        "frontText": "la télé(vision)",
+        "frontDetails": "[latelevizjɔ̃]",
+        "backText": "Fernsehen"
+      },
+      {
+        "frontText": "le roller",
+        "frontDetails": "[ləʁɔlɛʁ]",
+        "backText": "Rollerskaten, Inlinerfahren"
+      },
+      {
+        "frontText": "l’athlétisme (m.)",
+        "frontDetails": "[latletismə]",
+        "backText": "Leichtathletik"
+      },
+      {
+        "frontText": "le basket(ball)",
+        "frontDetails": "[ləbaskɛtbal]",
+        "backText": "Basketball"
+      }
+    ];
+
+    openDeck(cards, { lang: "de", dictionary: "fr-de" });
+  </script>
+</body>
+
+</html>
